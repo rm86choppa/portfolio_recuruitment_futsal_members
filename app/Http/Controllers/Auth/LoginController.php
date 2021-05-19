@@ -21,8 +21,9 @@ class LoginController extends Controller
 
     use AuthenticatesUsers;
 
-    //5回ログインに失敗すると30分間ログイン不可にする(同一IP、同一ユーザをロック)
-    protected $maxAttempts = 5;     // ログイン試行回数（回）
+    //5回ログインに失敗すると5分間ログイン不可にする(同一IP、同一ユーザをロック)
+    //ロック情報はキャッシュを使用してる
+    protected $maxAttempts = 2;     // ログイン試行回数（回）
     protected $decayMinutes = 5;   // ログインロックタイム（分）
 
     /**
@@ -69,15 +70,5 @@ class LoginController extends Controller
             $credentials = ['name' => $email_or_name, 'password' => $password];
         }
         return $this->guard()->attempt($credentials, $request->filled('remember'));
-    }
-
-    //ログインロックが正常に機能しない場合、以下追加()
-    public function authorize(Request $request) {
-        
-        Log::debug('throttleKey -> '.print_r($this->throttleKey($request), 1));
-        
-        // プロキシサーバを経由した場合に、X-Forwarded-Forヘッダから接続元のクライアントIPを取得する設定
-        $request::setTrustedProxies($request->ip(), $request::getTrustedHeaderSet());
-
     }
 }

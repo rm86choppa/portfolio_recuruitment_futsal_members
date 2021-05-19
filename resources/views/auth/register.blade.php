@@ -54,7 +54,7 @@
                         <div class="form-group row mb-0">
                             <div class="col-md-6 offset-md-4">
                                 <button type="submit" class="btn btn-primary create_new_button">
-                                    {{ __('新規作成') }}
+                                    {{ __('仮登録') }}
                                 </button>
                             </div>
                         </div>

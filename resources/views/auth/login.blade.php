@@ -59,7 +59,7 @@
                     <div class="form-group row mb-0">
                         <div class="col-md-10 offset-md-4">
                             <button type="submit" class="btn btn-primary sign_up_button" onclick="location.href='register'">
-                                {{ __('新規登録') }}
+                                {{ __('仮登録') }}
                             </button>
                         </div>
                     </div>

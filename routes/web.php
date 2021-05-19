@@ -19,9 +19,10 @@ Route::get('/', function () {
     return view('auth.login');
 });
 
-Auth::routes();
+//仮登録(メール確認機能)を使用するため、"verify=true"に設定
+Auth::routes(['verify' => true]);
 
-Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/home', 'HomeController@index')->name('home')->middleware('verified');
 
-//Postコントローラへのルート
-Route::resource('post', 'PostController', ['only' => ['index', 'create', 'store', 'edit', 'update', 'destroy']]);
+//Postコントローラへのルート(メール確認完了後に利用できるようverifiedのミドルウェア追加)
+Route::resource('post', 'PostController', ['only' => ['index', 'create', 'store', 'edit', 'update', 'destroy']])->middleware('verified');

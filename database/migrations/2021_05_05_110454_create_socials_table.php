@@ -14,11 +14,11 @@ class CreateSocialsTable extends Migration
     public function up()
     {
         Schema::create('socials', function (Blueprint $table) {
-            $table->Increments('id');
+            $table->Increments('id')->unsigned();
 
             //ユーザIDの外部キー設定
             //(参照してるユーザIDの登録が削除されたとき、そのIDを参照してるレコードも自動的に削除)
-            $table->bigInteger('user_id')->unsigned();
+            $table->Integer('user_id')->unsigned();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->string('provider_id', 100);
             $table->string('provider_name', 20);
