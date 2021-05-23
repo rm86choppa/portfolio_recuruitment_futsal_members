@@ -114,4 +114,9 @@ return [
 
     'password_timeout' => 10800,
 
+    //メール確認の有効期限(分)
+    'verification' => [
+        'expire' => 60,
+    ],
+
 ];

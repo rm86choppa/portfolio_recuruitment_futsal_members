@@ -14,7 +14,7 @@
                         </div>
                     @endif
 
-                    You are logged in!
+                    投稿一覧画面作成予定
                 </div>
             </div>
         </div>
