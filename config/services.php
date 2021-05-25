@@ -47,5 +47,6 @@ return [
        'client_secret' => env('FACEBOOK_CLIENT_SECRET'),
        'redirect' => env('https://localhost:443') . '/login/facebook/callback',
 	],
+    
 
 ];
