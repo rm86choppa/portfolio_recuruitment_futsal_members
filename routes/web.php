@@ -24,5 +24,8 @@ Auth::routes(['verify' => true]);
 
 Route::get('/home', 'HomeController@index')->name('home')->middleware('verified');
 
+//退会機能のルート
+Route::post('/deleteAccount', 'DeleteAccountController')->middleware('verified');
+
 //Postコントローラへのルート(メール確認完了後に利用できるようverifiedのミドルウェア追加)
 Route::resource('post', 'PostController', ['only' => ['index', 'create', 'store', 'edit', 'update', 'destroy']])->middleware('verified');

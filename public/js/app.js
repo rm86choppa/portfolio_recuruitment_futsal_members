@@ -49823,6 +49823,8 @@ var app = new Vue({
   el: '#app'
 });
 
+__webpack_require__(/*! ./delete_account */ "./resources/js/delete_account.js");
+
 /***/ }),
 
 /***/ "./resources/js/bootstrap.js":
@@ -49936,6 +49938,29 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ExampleComponent_vue_vue_type_template_id_299e239e___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
+
+/***/ }),
+
+/***/ "./resources/js/delete_account.js":
+/*!****************************************!*\
+  !*** ./resources/js/delete_account.js ***!
+  \****************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+$(function () {
+  //退会リンクが押下
+  $('.delete_account').on('click', function () {
+    //ダイアログがクリックされたら退会form実行
+    var canDeleteAccount = window.confirm('退会してよろしいですか');
+
+    if (canDeleteAccount == true) {
+      var delete_account_form = document.getElementById('delete_account-form');
+      delete_account_form.submit();
+    } else {//何もしない
+    }
+  });
+});
 
 /***/ }),
 

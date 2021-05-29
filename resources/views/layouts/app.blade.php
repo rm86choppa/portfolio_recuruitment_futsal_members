@@ -7,7 +7,7 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
+    <title>{{ 'フットサルメンバー募集' }}</title>
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
@@ -25,7 +25,7 @@
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/') }}">
-                    {{ config('app.name', 'Laravel') }}
+                    {{ 'フットサルメンバー募集' }}
                 </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>
@@ -42,11 +42,11 @@
                         <!-- Authentication Links -->
                         @guest
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
+                                <a class="nav-link" href="{{ route('login') }}">{{ __('ログイン') }}</a>
                             </li>
                             @if (Route::has('register'))
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
+                                    <a class="nav-link" href="{{ route('register') }}">{{ __('登録') }}</a>
                                 </li>
                             @endif
                         @else
@@ -59,14 +59,26 @@
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                        onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
-                                        {{ __('Logout') }}
+                                        {{ __('ログアウト') }}
                                     </a>
 
                                     <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                                         @csrf
                                     </form>
+
+                                    <!-- 退会が押下されたらdelete_account.jsでポップアップを表示しokが押下されたら退会フォームをsubmitメソッドで実行 -->
+                                    <a class="dropdown-item delete_account" href="" onclick="event.preventDefault();">
+                                        退会
+                                    </a>
+
+                                    <form id="delete_account-form" action="{{ url('deleteAccount') }}" method="post" style="display: none;">
+                                        @csrf
+                                        <input type="hidden" name='user_id' id="user_id" value="{{ Auth::user()->id }}">
+                                        <button type="submit" name="add" style="display:none"></button>
+                                    </form>
                                 </div>
                             </li>
+                            <!-- 退会 -->
                         @endguest
                     </ul>
                 </div>
