@@ -72,4 +72,18 @@ class Social extends Model
 
         return $account;
     }
+
+    //認証完了処理(sns連携を使用しない登録だと、メール確認を使用してるのでemail_verified_atの更新が必要)
+    public function authentication($user) {
+        
+        if (isset($user['email_verified_at'])) {
+            return $user;
+        } else {
+            $result = User::find($user['id'])->update(['email_verified_at' => now()]);
+
+            $verifiedUser = User::find($user['id']);
+
+            return $verifiedUser;
+        }
+    }
 }

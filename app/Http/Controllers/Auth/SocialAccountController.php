@@ -27,10 +27,13 @@ class SocialAccountController extends Controller
         $providerInfo['provider'] = $provider;
 
         //登録処理
-        $authUser = $social->create($providerInfo);
+        $socialedUser = $social->create($providerInfo);
+
+        //認証完了処理(メール確認をスキップするため、email_verified_atの更新)
+        $verifiedUser = $social->authentication($socialedUser);
 
         //認証(登録済か新規作成したユーザ情報でログイン)
-        auth()->login($authUser, true);
+        auth()->login($verifiedUser, true);
         return redirect()->to('/home');
 
     }
