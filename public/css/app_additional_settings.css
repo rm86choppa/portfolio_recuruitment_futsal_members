@@ -1,0 +1,49 @@
+@import url(https://fonts.googleapis.com/css?family=Nunito);@charset "UTF-8";
+
+/*!
+ * Bootstrap v4.6.0 (https://getbootstrap.com/)
+ * Copyright 2011-2021 The Bootstrap Authors
+ * Copyright 2011-2021 Twitter, Inc.
+ * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
+ */
+
+ .v_line_fix {
+  width: 2px;
+  height: 150px;
+  margin-right: 15px;
+  background-color: gray;
+}
+
+ .goole_button {
+   background-color: #C6594B;
+ }
+
+ .facebook_button {
+   background-color: #1877F2;
+ }
+
+ .twitter_button {
+   background-color: #55ACEE;
+ }
+
+ .s_line_fix {
+  width: 100%;
+  height: 2px;
+  margin-bottom: 7px;
+  background-color: gray;
+}
+
+ .login_button {
+   background-color: #004BB1;
+   border-color:#004BB1;
+ }
+
+ .sign_up_button {
+   background-color: #36A420;
+   border-color:#36A420;
+ }
+
+ .create_new_button {
+  background-color: #36A420;
+   border-color:#36A420;
+ }
