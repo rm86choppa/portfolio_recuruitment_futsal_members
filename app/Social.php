@@ -29,9 +29,14 @@ class Social extends Model
         if($account) 
         {
             //SNS連携済なら、それに紐づくusersテーブルの情報を返す。(SNSサイトから渡された情報に変更がある可能性があるので更新)
-            $user = User::find($account['user_id'])
-                            ->update(['name' => $providerUser->getName(), 'email' => $providerUser->getEmail()]);;
-            
+            $name_search_user = User::where('name', $providerUser->getName())->first();
+            if($name_search_user) {
+                $user = User::find($account['user_id'])
+                                ->update(['email' => $providerUser->getEmail()]);;
+            }else {
+                $user = User::find($account['user_id'])
+                ->update(['name' => $providerUser->getName(), 'email' => $providerUser->getEmail()]);;
+            }
             $user = User::find($account['user_id']);
 
             return $user;
@@ -40,13 +45,21 @@ class Social extends Model
         //上記でまだ未登録だった場合、UsersテーブルにSNSサイトから渡されたメールアドレスで検索した情報があればそのユーザに紐づけ登録、
         //なければSNSサイトから渡されたメールアドレスで新規登録(同じユーザで既に登録があっても複数ＳＮＳで同じメールアドレスを登録してない場合、同じユーザか判断できないため別ユーザ扱いになるので注意)
         //Usersテーブルに登録すると紐づいてるSocialsテーブルにも設定される
-        $user = User::where('email', $providerUser->getEmail())->first();
-        if (!$user) {
-            // 未作成ならここで作成する
-            $user = User::create([  
-                'email' => $providerUser->getEmail(),
-                'name'  => $providerUser->getName(),
-            ]);
+        $email_search_user = User::where('email', $providerUser->getEmail())->first();
+        if (!$email_search_user) {
+            //名前が同一の場合登録エラーになるので、名前でも検索して1件もなければ名前も登録、既に登録があれば名前は登録しない(名前でのログインでユニークに設定してるため)
+            $name_search_user = User::where('name', $providerUser->getName())->first();
+
+            if($name_search_user) {
+                $user = User::create([  
+                    'email' => $providerUser->getEmail(),
+                ]);
+            } else {
+                $user = User::create([  
+                    'email' => $providerUser->getEmail(),
+                    'name'  => $providerUser->getName(),
+                ]);
+            }
         }
 
         // 取得(or作成)したusersテーブルに紐づくlinked_social_accountsのレコードを1行追加
