@@ -149,6 +149,12 @@ return [
         'name' => '名前',
         'email_or_name' => 'メールアドレスまたはユーザ名',
         'password' => 'パスワード',
+        'title' => 'タイトル',
+        'recruitment_area' => '地域',
+        'recruitment_level' => 'レベル',
+        'practice_content' => '練習内容',
+        'schedule' => '予定',
+        'tag' => 'タグ',
     ],
 
 ];

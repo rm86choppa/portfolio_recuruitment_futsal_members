@@ -19,6 +19,10 @@ Route::get('/', function () {
     return view('auth.login');
 });
 
+Route::get('/newPost', function () {
+    return view('newPost');
+});
+
 //仮登録(メール確認機能)を使用するため、"verify=true"に設定
 Auth::routes(['verify' => true]);
 
@@ -29,3 +33,6 @@ Route::post('/deleteAccount', 'DeleteAccountController')->middleware('verified')
 
 //Postコントローラへのルート(メール確認完了後に利用できるようverifiedのミドルウェア追加)
 Route::resource('post', 'PostController', ['only' => ['index', 'create', 'store', 'edit', 'update', 'destroy']])->middleware('verified');
+
+//mypage用ルート
+Route::resource('mypage', 'MypageController', ['only' => ['index', 'create', 'store', 'edit', 'update', 'destroy']])->middleware('verified');

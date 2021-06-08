@@ -11,7 +11,15 @@
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
-
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    
+    <script>
+        // モーダルウィンドウ
+        $(window).on('load',function(){
+            $('#myModal').modal('show');
+        });
+    </script>
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
@@ -24,6 +32,27 @@
     <div id="app">
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
             <div class="container">
+                @if (session('flash_message'))
+                    <!-- モーダルウィンドウの中身 -->
+                    <div class="modal fade" id="myModal" tabindex="-1"
+                        role="dialog" aria-labelledby="label1" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body text-center">
+                                    {{ session('flash_message') }}
+                                </div>
+                                <div class="modal-footer text-center">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                 @endif
+
                 <a class="navbar-brand" href="{{ url('/') }}">
                     {{ 'フットサルメンバー募集' }}
                 </a>
