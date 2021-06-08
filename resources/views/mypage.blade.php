@@ -4,53 +4,67 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
+
             <div class="card">
-                <div class="card-header">Dashboard</div>
-                <button type="submit" class="btn btn-primary login_button" onclick="location.href='/newPost'">
-                    {{ __('新規投稿') }}
-                </button>
                 <div class="card-body">
-                    <div class="row">
-                        <!-- SNS連携 -->
-                        <div class="col-md-4 offset-md-0"  role="group">
-                            <button type="submit" class="btn btn-primary goole_button mb-2 w-100" onclick="location.href='/login/google'">
-                                {{ __('Googleログイン') }}
-                            </button>
-                            <button type="submit" class="btn btn-primary facebook_button mb-2 w-100" onclick="location.href='/login/facebook'">
-                                {{ __('Facebookログイン') }}
-                            </button>
-                            <button type="submit" class="btn btn-primary twitter_button mb-2 w-100" onclick="location.href='/login/twitter'">
-                                {{ __('Twitterログイン') }}
-                            </button>
-                        </div>
-                        <!-- SNS連携 -->
-                        
-                        <!-- 縦線 -->
-                        <div class="v_line_fix"></div>
-
-                        <div class="col"  role="group">
-                            <form method="POST" action="{{ route('login') }}">
-                                @csrf
-                                
-                                <div class="form-group row">
-                                    <button type="submit" class="btn btn-primary login_button" onclick="location.href='/'">
-                                        {{ __('') }}
-                                    </button>
-                                </div>
-                        　  </form>
-                        </div>
-                    </div>
-
-
-                    @if (session('status'))
-                        <div class="alert alert-success" role="alert">
-                            {{ session('status') }}
-                        </div>
-                    @endif
-
-                    マイページ画面作成予定
+                    <label class="row col-md-4 col-form-label text-md-left">{{ __('ユーザ名') }}</label>
+                    <label class="row col-md-4 col-form-label text-md-left">{{ __('abc@gmail.com') }}</label>
                 </div>
             </div>
+
+            <div class="card">
+                <div class="card-body">
+                    <div class="btn-group btn-group-lg w-100">
+                        <a href="#" class="btn btn-primary border">{{ __('ユーザ名変更') }}</a>
+                        <a href="#" class="btn btn-primary border">{{ __('メールアドレス変更') }}</a>
+                        <a href="#" class="btn btn-primary border">{{ __('パスワード変更') }}</a>
+                        <a href="/newPost" class="btn btn-primary border">{{ __('新規投稿') }}</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="text-right mt-3">
+                <button type="submit" class="btn btn-primary login_button col-md-2" onclick="location.href='#">
+                    {{ __('切替') }}
+                </button>
+            </div>
+
+            <!-- 全投稿をループ -->
+            @foreach($posts as $post)
+                <!-- ログイン中のユーザの投稿のみ表示 -->
+                @if(Auth::user()->id == $post->user_id)
+                    <div class="card mt-3">
+                        <div class="card-header text-center">{{ __($post->title) }}</div>
+                        
+                        <div class="card-body">
+                            <label class="row col-md-12 col-form-label text-md-left">{{ __($post->user->name) }}</label>
+                            <label class="row col-md-12 col-form-label text-md-left">{{ __($post->recruitment_area_prefecture) }} {{ __($post->recruitment_area) }}</label>
+                            <label class="row col-md-12 col-form-label text-md-left">{{ __($post->recruitment_level) }}</label>
+                            <label class="row col-md-12 col-form-label text-md-left">{{ __($post->practice_content) }}</label>
+                            <label class="row col-md-12 col-form-label text-md-left">{{ __($post->schedule) }}</label>
+                            <!-- 1投稿に紐づく全タグ情報表示 -->
+                            <div class="row col-md-12 ">
+                            @isset($post->tags)
+                                @foreach($post->tags as $tag)
+                                    @isset($tag)
+                                      <label class="text-md-left"><b>{{ __('#') }}</b> {{ __($tag->tag) }}</label>
+                                    @endisset
+                                @endforeach
+                            @endisset
+                            </div>
+                            <div class="btn-group btn-group-lg w-100 justify-content-center">
+                                <button type="submit" class="btn btn-primary login_button col-md-2 border" onclick="location.href='#">
+                                    {{ __('切り替え') }}
+                                </button>
+                                <button type="submit" class="btn btn-primary login_button col-md-2 border" onclick="location.href='#">
+                                    {{ __('切り替え') }}
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                @endif
+            @endforeach
+
         </div>
     </div>
 </div>

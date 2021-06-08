@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Post;
 
 class MypageController extends Controller
 {
@@ -13,7 +14,11 @@ class MypageController extends Controller
      */
     public function index()
     {
-        return view('mypage');
+        //全投稿情報取得(投稿に紐づくユーザ、タグ、いいね情報も取得)
+        //todo:いいね機能実装後、投稿に紐づくユーザ(いいねしたユーザ)の情報も取得が必要のためwithの引数に追加
+        $posts = Post::with('user', 'tags')->orderBy('updated_at', 'desc')->get();
+
+        return view('mypage', compact('posts'));
     }
 
     /**
