@@ -32,3 +32,5 @@ const app = new Vue({
 });
 
 require('./delete_account');
+require('./likes');
+require('./display_update');

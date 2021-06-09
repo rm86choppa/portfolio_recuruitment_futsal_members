@@ -36,3 +36,6 @@ Route::resource('post', 'PostController', ['only' => ['index', 'create', 'store'
 
 //mypage用ルート
 Route::resource('mypage', 'MypageController', ['only' => ['index', 'create', 'store', 'edit', 'update', 'destroy']])->middleware('verified');
+
+//いいね機能のルート
+Route::get('/likes', 'LikesController');

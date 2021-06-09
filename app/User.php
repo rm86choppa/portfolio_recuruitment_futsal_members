@@ -49,4 +49,9 @@ class User extends Authenticatable implements MustVerifyEmail
     public function accounts() {
         return $this->hasMany('App\Social', 'user_id', 'id');
     }
+
+    //いいね機能のリレーション(postsと多対多の紐づけ)
+    public function likes() {
+        return $this->belongsToMany('App\Post', 'likes')->withTimestamps();
+    }
 }

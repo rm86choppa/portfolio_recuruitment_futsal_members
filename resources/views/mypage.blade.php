@@ -7,8 +7,8 @@
 
             <div class="card">
                 <div class="card-body">
-                    <label class="row col-md-4 col-form-label text-md-left">{{ __('ユーザ名') }}</label>
-                    <label class="row col-md-4 col-form-label text-md-left">{{ __('abc@gmail.com') }}</label>
+                    <label class="row col-md-4 col-form-label text-md-left">{{ __(Auth::user()->name) }}</label>
+                    <label class="row col-md-4 col-form-label text-md-left">{{ __(Auth::user()->email) }}</label>
                 </div>
             </div>
 
@@ -24,7 +24,7 @@
             </div>
 
             <div class="text-right mt-3">
-                <button type="submit" class="btn btn-primary login_button col-md-2" onclick="location.href='#">
+                <button type="submit" class="btn btn-primary switch_button col-md-2" onclick="location.href='#">
                     {{ __('切替') }}
                 </button>
             </div>
@@ -52,13 +52,29 @@
                                 @endforeach
                             @endisset
                             </div>
-                            <div class="btn-group btn-group-lg w-100 justify-content-center">
-                                <button type="submit" class="btn btn-primary login_button col-md-2 border" onclick="location.href='#">
+                            <div class="row justify-content-center">
+                            <div class="btn-group">
+                                <button type="submit" class="btn btn-primary login_button col-md-7 border" onclick="location.href='#">
                                     {{ __('切り替え') }}
                                 </button>
-                                <button type="submit" class="btn btn-primary login_button col-md-2 border" onclick="location.href='#">
+                                <button type="submit" class="btn btn-primary login_button col-md-7 border" onclick="location.href='#">
                                     {{ __('切り替え') }}
                                 </button>
+                                
+                            </div>
+                            <div class="btn btn-link likes_btn">
+                                <input type="hidden" name='post_id' id="post_id" value="{{ $post->id }}">
+                                <input type="hidden" name='user_id' id="user_id" value="{{ Auth::user()->id }}">
+                                <!-- 今処理してる投稿に自分がいいねしてるか調べていいね済アイコンか未いいねアイコンのどちらを表示するか判定 -->
+                                <!-- 方法：今ループで処理してる投稿に紐づいてるいいねの中で自分(ログインユーザ)のidと一致してるレコードがあるか条件で検索 -->
+                                @if($post->likes->where('id', Auth::user()->id)->count() >= 1)
+                                    <i class="far fa-heart hide">{{ $post->likes->count() }}</i>
+                                    <i class="fas fa-heart">{{ $post->likes->count() }}</i>
+                                @else
+                                    <i class="far fa-heart">{{ $post->likes->count() }}</i>
+                                    <i class="fas fa-heart hide">{{ $post->likes->count() }}</i>
+                                @endif
+                            </div>
                             </div>
                         </div>
                     </div>

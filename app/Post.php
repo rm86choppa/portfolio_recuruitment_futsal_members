@@ -39,4 +39,9 @@ class Post extends Model
     public function tags() {
         return $this->belongsToMany('App\Tag')->withTimestamps();
     }
+
+    //いいね機能のリレーション(usersと多対多の紐づけ)
+    public function likes() {
+       return $this->belongsToMany('App\User', 'likes')->withTimestamps();
+    }
 }
