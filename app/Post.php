@@ -29,8 +29,19 @@ class Post extends Model
 
     }
 
+    //usersとの紐づけ(リレーション)
+    //主テーブル名の単数_id(post_id)にしてる場合は特に必要ないが、それ以外の場合外部キー、ローカルキーを指定が必要
+    public function user() {
+        return $this->belongsto('App\User');
+    }
+
     //タグ機能で多対多のリレーションを組んで中間テーブルを使用するためtagsと紐づけ
     public function tags() {
         return $this->belongsToMany('App\Tag')->withTimestamps();
+    }
+
+    //いいね機能のリレーション(usersと多対多の紐づけ)
+    public function likes() {
+       return $this->belongsToMany('App\User', 'likes')->withTimestamps();
     }
 }
