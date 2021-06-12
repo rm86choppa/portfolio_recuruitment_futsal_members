@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Post;
-
+use App\User;
 class MypageController extends Controller
 {
     /**
@@ -19,6 +19,22 @@ class MypageController extends Controller
         $posts = Post::with('user', 'tags')->orderBy('updated_at', 'desc')->get();
 
         return view('mypage', compact('posts'));
+    }
+
+    /**
+     * ユーザネーム変更
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function nameChange(Request $request) {
+        
+        $user = User::find($request['user_id']);
+        $user->name = $request['name'];
+        $user->save();
+
+        $ajax_return_data['name'] = $user->name;
+
+        return response()->json($ajax_return_data);
     }
 
     /**

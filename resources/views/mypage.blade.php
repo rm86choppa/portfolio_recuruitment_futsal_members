@@ -7,7 +7,7 @@
 
             <div class="card">
                 <div class="card-body">
-                    <label class="row col-md-4 col-form-label text-md-left">{{ __(Auth::user()->name) }}</label>
+                    <label class="row col-md-4 col-form-label text-md-left name">{{ __(Auth::user()->name) }}</label>
                     <label class="row col-md-4 col-form-label text-md-left">{{ __(Auth::user()->email) }}</label>
                 </div>
             </div>
@@ -15,7 +15,7 @@
             <div class="card">
                 <div class="card-body">
                     <div class="btn-group btn-group-lg w-100">
-                        <a href="#" class="btn btn-primary border">{{ __('ユーザ名変更') }}</a>
+                        <a href="#" class="btn btn-primary border" id="user_name_change_button">{{ __('ユーザ名変更') }}</a>
                         <a href="#" class="btn btn-primary border">{{ __('メールアドレス変更') }}</a>
                         <a href="#" class="btn btn-primary border">{{ __('パスワード変更') }}</a>
                         <a href="/newPost" class="btn btn-primary border">{{ __('新規投稿') }}</a>
@@ -37,7 +37,7 @@
                         <div class="card-header text-center">{{ __($post->title) }}</div>
                         
                         <div class="card-body">
-                            <label class="row col-md-12 col-form-label text-md-left">{{ __($post->user->name) }}</label>
+                            <label id="user_name_text" class="row col-md-12 col-form-label text-md-left name">{{ __($post->user->name) }}</label>
                             <label class="row col-md-12 col-form-label text-md-left">{{ __($post->recruitment_area_prefecture) }} {{ __($post->recruitment_area) }}</label>
                             <label class="row col-md-12 col-form-label text-md-left">{{ __($post->recruitment_level) }}</label>
                             <label class="row col-md-12 col-form-label text-md-left">{{ __($post->practice_content) }}</label>
