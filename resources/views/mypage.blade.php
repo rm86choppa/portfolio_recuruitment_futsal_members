@@ -17,7 +17,7 @@
                     <div class="btn-group btn-group-lg w-100">
                         <a href="#" class="btn btn-primary border" id="user_name_change_button">{{ __('ユーザ名変更') }}</a>
                         <a href="#" class="btn btn-primary border">{{ __('メールアドレス変更') }}</a>
-                        <a href="#" class="btn btn-primary border">{{ __('パスワード変更') }}</a>
+                        <a href="#" class="btn btn-primary border" id="password_change_button">{{ __('パスワード変更') }}</a>
                         <a href="/newPost" class="btn btn-primary border">{{ __('新規投稿') }}</a>
                     </div>
                 </div>

@@ -35,3 +35,4 @@ require('./delete_account');
 require('./likes');
 require('./display_update');
 require('./user_name_change');
+require('./password_change');

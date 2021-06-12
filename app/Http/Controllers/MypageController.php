@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Post;
 use App\User;
+use Illuminate\Support\Facades\Hash;
+
 class MypageController extends Controller
 {
     /**
@@ -35,6 +37,23 @@ class MypageController extends Controller
         $ajax_return_data['name'] = $user->name;
 
         return response()->json($ajax_return_data);
+    }
+
+    /**
+     * パスワード変更
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function passwordChange(Request $request) {
+        
+        $user = User::find($request['user_id']);
+
+        //パスワードを暗号化してからDBに保存
+        $hashPass = Hash::make($request['password']);
+        $user->password = $hashPass;
+        $user->save();
+
+        return response()->json();
     }
 
     /**

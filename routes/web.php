@@ -42,3 +42,6 @@ Route::get('/likes', 'LikesController')->middleware('verified');
 
 //ユーザネーム変更機能のルート
 Route::get('/name_change', 'MypageController@nameChange')->middleware('verified');
+
+//パスワード変更機能のルート
+Route::get('/password_change', 'MypageController@passwordChange')->middleware('verified');
