@@ -21,9 +21,12 @@ $(function () {
                 beforeSend: function () {
                 } 
             }).done(function(data){
-            
-                alert('パスワードを変更しました');
-
+                //レスポンスにエラーがあれば、そのエラーを表示(現状は同じ値で更新しようとしたとき)
+                if(data['error']) {
+                    alert(data['error']);
+                } else {
+                    alert('パスワードを変更しました');
+                }
             }).fail(function(){
                 alert("通信に失敗しました");
             });

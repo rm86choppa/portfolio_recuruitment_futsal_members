@@ -9,8 +9,11 @@ $(function () {
         const user_name_after_change = window.prompt("新しいユーザ名を入力してください", name);
 
         //ユーザ名が入力されてない(空文字)かキャンセル押下(null)してないとき、変更開始
-        if(user_name_after_change != null && user_name_after_change != "") {
-
+        if(user_name_after_change == null || user_name_after_change == "" ) {
+            //何もしない
+        } else if(user_name_after_change == name) {
+            alert("違う値で登録してください");
+        } else {
             //更新対象のユーザを検索するためユーザIDを取得
             const user_id = $('.likes_btn').children('#user_id').val();
             
@@ -37,6 +40,5 @@ $(function () {
                 alert("通信に失敗しました");
             });
         }
-
     });
 });

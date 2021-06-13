@@ -48,12 +48,22 @@ class MypageController extends Controller
         
         $user = User::find($request['user_id']);
 
-        //パスワードを暗号化してからDBに保存
-        $hashPass = Hash::make($request['password']);
-        $user->password = $hashPass;
-        $user->save();
+        //登録しようしてるパスワードと現在、登録中のパスワードを比較し同じであればエラーを入れてレスポンスを返す
+        if(Hash::check($request['password'], $user->password)) {
+            //同じ値だったとき、クライアントへエラーをレスポンス
+            $ajax_return_data['error'] = "違う値で登録してください";
 
-        return response()->json();
+            return response()->json($ajax_return_data);
+        } else {
+            //パスワードを暗号化してからDBに保存
+            $hashPass = Hash::make($request['password']);
+            $user->password = $hashPass;
+            $user->save();
+
+            return response()->json();
+        }
+
+        
     }
 
     /**
