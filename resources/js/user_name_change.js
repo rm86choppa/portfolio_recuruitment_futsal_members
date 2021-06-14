@@ -15,7 +15,7 @@ $(function () {
             alert("違う値で登録してください");
         } else {
             //更新対象のユーザを検索するためユーザIDを取得
-            const user_id = $('.likes_btn').children('#user_id').val();
+            const user_id = $('#login_user_id').val();
             
             $.ajax({
                 type: 'get',

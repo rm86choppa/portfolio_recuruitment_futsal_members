@@ -5,7 +5,8 @@ $(function () {
         //入力した変更後のnameを取得
         const password_after_change = window.prompt("新しいパスワードを入力してください");
         //更新対象のユーザを検索するためユーザIDを取得
-        const user_id = $('.likes_btn').children('#user_id').val();
+        const user_id = $('#login_user_id').val();
+        const elem = $('#login_user_id');
 
         //ユーザ名が入力されてない(空文字)かキャンセル押下(null)してないとき、変更開始
         if(password_after_change != null && password_after_change != "") {
