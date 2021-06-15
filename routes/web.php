@@ -38,4 +38,10 @@ Route::resource('post', 'PostController', ['only' => ['index', 'create', 'store'
 Route::resource('mypage', 'MypageController', ['only' => ['index', 'create', 'store', 'edit', 'update', 'destroy']])->middleware('verified');
 
 //いいね機能のルート
-Route::get('/likes', 'LikesController');
+Route::get('/likes', 'LikesController')->middleware('verified');
+
+//ユーザネーム変更機能のルート
+Route::get('/name_change', 'MypageController@nameChange')->middleware('verified');
+
+//パスワード変更機能のルート
+Route::get('/password_change', 'MypageController@passwordChange')->middleware('verified');

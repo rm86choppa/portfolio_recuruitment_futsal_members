@@ -1,6 +1,9 @@
 {
-    "/js/app.js": "/js/app.js?id=e30fce1c055c727c711d",
+    "/js/app.js": "/js/app.js?id=b92e34e1fd36f9fa1107",
     "/css/app.css": "/css/app.css?id=91d5ac8a933585869aef",
     "/js/delete_account.js": "/js/delete_account.js?id=10a0031d7c39968856b5",
-    "/js/likes.js": "/js/likes.js?id=63cfccf1403a663de017"
+    "/js/display_update.js": "/js/display_update.js?id=18084434ab2ee2dc1967",
+    "/js/likes.js": "/js/likes.js?id=39b00a3bfcb6c3704e43",
+    "/js/password_change.js": "/js/password_change.js?id=1e46f37e7a7bc8f5af89",
+    "/js/user_name_change.js": "/js/user_name_change.js?id=c9c6cee38c3dab123776"
 }

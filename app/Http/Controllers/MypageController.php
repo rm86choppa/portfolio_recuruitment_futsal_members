@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Post;
+use App\User;
+use Illuminate\Support\Facades\Hash;
 
 class MypageController extends Controller
 {
@@ -19,6 +21,49 @@ class MypageController extends Controller
         $posts = Post::with('user', 'tags')->orderBy('updated_at', 'desc')->get();
 
         return view('mypage', compact('posts'));
+    }
+
+    /**
+     * ユーザネーム変更
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function nameChange(Request $request) {
+        
+        $user = User::find($request['user_id']);
+        $user->name = $request['name'];
+        $user->save();
+
+        $ajax_return_data['name'] = $user->name;
+
+        return response()->json($ajax_return_data);
+    }
+
+    /**
+     * パスワード変更
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function passwordChange(Request $request) {
+        
+        $user = User::find($request['user_id']);
+
+        //登録しようしてるパスワードと現在、登録中のパスワードを比較し同じであればエラーを入れてレスポンスを返す
+        if(Hash::check($request['password'], $user->password)) {
+            //同じ値だったとき、クライアントへエラーをレスポンス
+            $ajax_return_data['error'] = "違う値で登録してください";
+
+            return response()->json($ajax_return_data);
+        } else {
+            //パスワードを暗号化してからDBに保存
+            $hashPass = Hash::make($request['password']);
+            $user->password = $hashPass;
+            $user->save();
+
+            return response()->json();
+        }
+
+        
     }
 
     /**
