@@ -1,9 +1,12 @@
 <select name="recruitment_area_prefecture">
-<option value="東京都" selected　@if(old('recruitment_area_prefecture')=='東京都') selected  @endif>東京都</option>
-<option value="北海道" @if(old('recruitment_area_prefecture')=='北海道') selected  @endif>北海道</option>
+<option value="東京都" selected　@if(old('recruitment_area_prefecture')=='東京都') selected 
+@elseif ($recruitment_area_prefecture ?? ''=='東京都') selected @endif>東京都</option>
+<option value="北海道" @if(old('recruitment_area_prefecture')=='北海道') selected  
+@elseif ($recruitment_area_prefecture ?? ''=='北海道') selected  @endif>北海道</option>
 <option value="青森県" @if(old('recruitment_area_prefecture')=='青森県') selected  @endif>青森県</option>
 <option value="岩手県" @if(old('recruitment_area_prefecture')=='岩手県') selected  @endif>岩手県</option>
-<option value="宮城県" @if(old('recruitment_area_prefecture')=='宮城県') selected  @endif>宮城県</option>
+<option value="宮城県" @if(old('recruitment_area_prefecture')=='宮城県') selected    
+@elseif ($recruitment_area_prefecture ?? ''=='宮城県') selected @endif>宮城県</option>
 <option value="秋田県" @if(old('recruitment_area_prefecture')=='秋田県') selected  @endif>秋田県</option>
 <option value="山形県" @if(old('recruitment_area_prefecture')=='山形県') selected  @endif>山形県</option>
 <option value="福島県" @if(old('recruitment_area_prefecture')=='福島県') selected  @endif>福島県</option>

@@ -39,7 +39,7 @@
                         
                         <div class="card-body">
                             <label class="row col-md-12 col-form-label text-md-left name">{{ __($post->user->name) }}</label>
-                            <label class="row col-md-12 col-form-label text-md-left">{{ __($post->recruitment_area_prefecture) }} {{ __($post->recruitment_area) }}</label>
+                            <label class="row col-md-12 col-form-label text-md-left">{{ __($post->recruitment_area_prefecture) }} : {{ __($post->recruitment_area) }}</label>
                             <label class="row col-md-12 col-form-label text-md-left">{{ __($post->recruitment_level) }}</label>
                             <label class="row col-md-12 col-form-label text-md-left">{{ __($post->practice_content) }}</label>
                             <label class="row col-md-12 col-form-label text-md-left">{{ __($post->schedule) }}</label>
@@ -55,9 +55,15 @@
                             </div>
                             <div class="row justify-content-center">
                                 <div class="btn-group">
-                                    <button type="submit" class="btn btn-primary col-md-7 border" onclick="location.href='#">
-                                        {{ __('編集') }}
-                                    </button>
+                                        <button type="submit" class="btn btn-primary col-md-7 border" onclick="document.getElementById('post_edit_form{{ $loop->index }}').submit();">
+                                            {{ __('編集') }}
+                                        </button>
+                                    <form id="post_edit_form{{ $loop->index }}" method="GET" action="{{ url('post/'.$post->id.'/edit') }}">
+                                        @csrf
+                                        <button type="submit" class="btn btn-primary col-md-7 border" style="display:none">
+                                            {{ __('編集') }}
+                                        </button>
+                                    </form>
                                     <button type="submit" class="btn btn-danger col-md-7 border" onclick="document.getElementById('post_delete_form{{ $loop->index }}').submit();">
                                         {{ __('削除') }}
                                     </button>

@@ -23,8 +23,6 @@ class PostController extends Controller
      */
     public function index()
     {
-        //compactで変数を渡してるが、未実装のためコメント
-        //return view('post', compact('posts'));
         return view('post');
     }
 
@@ -103,7 +101,7 @@ class PostController extends Controller
      */
     public function show($id)
     {
-        //
+        $id2 = $id;
     }
 
     /**
@@ -112,9 +110,18 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($postID)
     {
-        //
+        $post = Post::find($postID);
+
+        //タグ取得
+        $tags_display_format = "";
+        foreach ($post->tags as $tag) {
+            $tags_display_format = $tags_display_format.'＃'.$tag->tag;
+        }
+        
+
+        return view('editPost', compact('post'), compact('tags_display_format'));
     }
 
     /**
@@ -124,19 +131,38 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(PostRequest $request, $id)
     {
-        //
+        $result = Post::find($id)->update(['title' => $request->title, 'recruitment_area' => $request->recruitment_area, 
+                                        'recruitment_level' => $request->recruitment_level, 'practice_content' => $request->practice_content, 
+                                        'schedule' => $request->schedule, 'recruitment_area_prefecture' => $request->recruitment_area_prefecture]);
+
+        \Session::flash('flash_message', '更新が完了しました');
+
+        $post = Post::find($id);
+
+        //タグ取得
+        $tags_display_format = "";
+        foreach ($post->tags as $tag) {
+            $tags_display_format = $tags_display_format.'＃'.$tag->tag;
+        }
+        
+        //return redirect('post');
+        return view('editPost', compact('post'), compact('tags_display_format'));
     }
 
     /**
-     * Remove the specified resource from storage.
+     * 引数で受け取った投稿IDで検索して一致したレコード削除
      *
+     * @param  string $redirect_page
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($post_id)
     {
-        //
+        Post::find($post_id)->delete();
+
+        //元のページに遷移(表示は更新される)
+        return back();
     }
 }
