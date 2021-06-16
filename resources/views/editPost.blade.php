@@ -27,7 +27,7 @@
                             <label for="recruitment_area" class="col-md-4 col-form-label text-md-right">{{ __('募集地域') }}</label>
 
                             <div class="col-md-6">
-                                @component('components.prefecture',['recruitment_area_prefecture', $post->recruitment_area_prefecture])
+                                @component('components.prefecture', ['recruitment_area_prefecture' => $post->recruitment_area_prefecture])
                                 @endcomponent
 
                                 <input id="recruitment_area" class="form-control @error('recruitment_area') is-invalid @enderror" name="recruitment_area" autocomplete="current-area" value="{{ $post['recruitment_area'] }}"　placeholder="足立区、新宿区">
