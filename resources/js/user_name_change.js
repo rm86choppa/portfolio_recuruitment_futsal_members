@@ -30,7 +30,7 @@ $(function () {
                 } 
             }).done(function(data){
                 
-                $('.name').each(function() {
+                $('.myPostName').each(function() {
                     //変更後のnameの値で表示されてるネーム情報更新
                     $(this).text(data['name']);
                 });

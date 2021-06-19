@@ -17,10 +17,12 @@ class MypageController extends Controller
     public function index()
     {
         //全投稿情報取得(投稿に紐づくユーザ、タグ、いいね情報も取得)
-        //todo:いいね機能実装後、投稿に紐づくユーザ(いいねしたユーザ)の情報も取得が必要のためwithの引数に追加
-        $posts = Post::with('user', 'tags')->orderBy('updated_at', 'desc')->get();
+        $posts = Post::with('user', 'tags', 'likes')->orderBy('updated_at', 'desc')->get();
 
-        return view('mypage', compact('posts'));
+        //ログインユーザがいいねした投稿の一覧を表示するため、ユーザに紐づく投稿(いいねした投稿)を取得
+        $users = User::with('likes')->orderby('updated_at', 'desc')->get();
+
+        return view('mypage', compact('posts'), compact('users'));
     }
 
     /**

@@ -1,3 +1,5 @@
+<?php $recruitment_area_prefecture = $recruitment_area_prefecture ?? ""; ?>
+
 <select name="recruitment_area_prefecture">
 <option value="東京都" selected　@if(old('recruitment_area_prefecture')=='東京都') selected 
 @elseif ($recruitment_area_prefecture =='東京都') selected @endif>東京都</option>

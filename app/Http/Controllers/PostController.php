@@ -101,7 +101,7 @@ class PostController extends Controller
      */
     public function show($id)
     {
-        $id2 = $id;
+        //
     }
 
     /**
@@ -119,7 +119,6 @@ class PostController extends Controller
         foreach ($post->tags as $tag) {
             $tags_display_format = $tags_display_format.'＃'.$tag->tag;
         }
-        
 
         return view('editPost', compact('post'), compact('tags_display_format'));
     }
@@ -131,23 +130,42 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(PostRequest $request, $id)
+    public function update(PostRequest $request, $post_id)
     {
-        $result = Post::find($id)->update(['title' => $request->title, 'recruitment_area' => $request->recruitment_area, 
+        
+             $post_obj = new Post;
+             $afterSplitTags = $post_obj->splitByTag($request->tag);
+ 
+             //タグをハッシュタグ毎に分ける
+             if (isset($afterSplitTags)){
+                 //全タグデータ追加(ユニークなので既に登録済の部分は追加しない)
+                 foreach ($afterSplitTags as $tagData) {
+                     //存在しないタグなら追加し追加データ取得、存在していたらデータ取得のみ
+                     $tagDatas = Tag::firstOrCreate(['tag' => $tagData]);
+                     $post_tag_datas[] = $tagDatas['id'];
+                 }
+ 
+             }
+
+             $result = Post::find($post_id)->update(['title' => $request->title, 'recruitment_area' => $request->recruitment_area, 
                                         'recruitment_level' => $request->recruitment_level, 'practice_content' => $request->practice_content, 
                                         'schedule' => $request->schedule, 'recruitment_area_prefecture' => $request->recruitment_area_prefecture]);
+ 
+             //中間テーブル更新
+             $post =  Post::find($post_id);
+ 
+             //新規登録
+             $tags_display_format = "";
+             if (isset($post_tag_datas)) {
+                 //更新し直しするため、syncを使用
+                 //(今まで紐づけされてた情報は不要で、リクエストでもらったタグ情報のみDBに保存される状態にする)
+                 $post->tags()->sync($post_tag_datas);
 
-        \Session::flash('flash_message', '更新が完了しました');
+                 $tags_display_format = $request->tag;
+             }
+ 
+         \Session::flash('flash_message', '更新が完了しました');
 
-        $post = Post::find($id);
-
-        //タグ取得
-        $tags_display_format = "";
-        foreach ($post->tags as $tag) {
-            $tags_display_format = $tags_display_format.'＃'.$tag->tag;
-        }
-        
-        //return redirect('post');
         return view('editPost', compact('post'), compact('tags_display_format'));
     }
 
