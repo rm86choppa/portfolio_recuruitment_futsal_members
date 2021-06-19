@@ -40,7 +40,9 @@
                 @if($user->id == Auth::user()->id)
                     <!-- ログインユーザの情報に紐づく投稿(自分がいいねしてる投稿)を表示 -->
                     @foreach($user->likes as $post)
-                        @component('components.postsDisplay', ['post' => $post])
+                        <!-- 編集完了したらマイページに戻るよう引数で指定にする -->
+                        @component('components.postsDisplay', ['post' => $post,
+                                                               'URL'  => 'mypage/'.$post->id.'/edit' ])
                         @endcomponent
                     @endforeach
                 @endif
@@ -54,7 +56,8 @@
             @foreach($posts as $post)
                 <!-- ログイン中のユーザの投稿のみ表示 -->
                 @if(Auth::user()->id == $post->user_id)
-                @component('components.postsDisplay', ['post' => $post])
+                @component('components.postsDisplay', ['post' => $post,
+                                                       'URL'  => 'mypage/'.$post->id.'/edit' ])
                 @endcomponent
                 @endif
             @endforeach

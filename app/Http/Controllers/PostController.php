@@ -50,25 +50,20 @@ class PostController extends Controller
         //複数のDBを更新するため、一部の失敗等でのデータ不整合を防ぐためトランザクションを使用しDB更新が全て成功でコミット
         DB::beginTransaction();
         try {
-            $post = new Post;
-            $afterSplitTags = $post->splitByTag($requestDatas['tag']);
 
-            //タグをハッシュタグ毎に分ける
-            if (isset($afterSplitTags)){
-                //全タグデータ追加(ユニークなので既に登録済の部分は追加しない)
-                foreach ($afterSplitTags as $tagData) {
-                    //存在しないタグなら追加し追加データ取得、存在していたらデータ取得のみ
-                    $tagDatas = Tag::firstOrCreate(['tag' => $tagData]);
-                    $post_tag_datas[] = $tagDatas['id'];
-                }
+            $tag = new Tag;
+            //タグを配列に変換
+            $afterSplitTags = $tag->splitByTag($requestDatas['tag']);
 
-            }
+            //タグ登録
+            $post_tag_datas = $tag->insertTagData($afterSplitTags);
 
             //投稿の不要なデータ削除
             unset($requestDatas['_token']);
             unset($requestDatas['tag']);
 
             //投稿内容を新規追加
+            $post = new Post;
             $post->fill($requestDatas)->save();
 
             //追加した投稿のID取得
@@ -120,11 +115,14 @@ class PostController extends Controller
             $tags_display_format = $tags_display_format.'＃'.$tag->tag;
         }
 
+        //編集画面での更新完了後の遷移先をマイページにするようURL情報を作成
+        $URL = 'post/'.$postID;
+
         return view('editPost', compact('post'), compact('tags_display_format'));
     }
 
     /**
-     * Update the specified resource in storage.
+     * タグ、投稿、中間テーブル(どの投稿にどのタグが紐づいてるか管理してるテーブル)の更新
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
@@ -132,41 +130,39 @@ class PostController extends Controller
      */
     public function update(PostRequest $request, $post_id)
     {
-        
-             $post_obj = new Post;
-             $afterSplitTags = $post_obj->splitByTag($request->tag);
- 
-             //タグをハッシュタグ毎に分ける
-             if (isset($afterSplitTags)){
-                 //全タグデータ追加(ユニークなので既に登録済の部分は追加しない)
-                 foreach ($afterSplitTags as $tagData) {
-                     //存在しないタグなら追加し追加データ取得、存在していたらデータ取得のみ
-                     $tagDatas = Tag::firstOrCreate(['tag' => $tagData]);
-                     $post_tag_datas[] = $tagDatas['id'];
-                 }
- 
-             }
+        $tag = new Tag;
+        //タグを配列に変換
+        $afterSplitTags = $tag->splitByTag($request->tag);
 
-             $result = Post::find($post_id)->update(['title' => $request->title, 'recruitment_area' => $request->recruitment_area, 
-                                        'recruitment_level' => $request->recruitment_level, 'practice_content' => $request->practice_content, 
-                                        'schedule' => $request->schedule, 'recruitment_area_prefecture' => $request->recruitment_area_prefecture]);
- 
-             //中間テーブル更新
-             $post =  Post::find($post_id);
- 
-             //新規登録
-             $tags_display_format = "";
-             if (isset($post_tag_datas)) {
-                 //更新し直しするため、syncを使用
-                 //(今まで紐づけされてた情報は不要で、リクエストでもらったタグ情報のみDBに保存される状態にする)
-                 $post->tags()->sync($post_tag_datas);
+        //タグ登録
+        $post_tag_datas = $tag->insertTagData($afterSplitTags);
 
-                 $tags_display_format = $request->tag;
-             }
- 
-         \Session::flash('flash_message', '更新が完了しました');
+        //投稿の更新
+        $result = Post::find($post_id)->update(['title' => $request->title, 
+                                                'recruitment_area' => $request->recruitment_area, 
+                                                'recruitment_level' => $request->recruitment_level, 
+                                                'practice_content' => $request->practice_content, 
+                                                'schedule' => $request->schedule, 
+                                                'recruitment_area_prefecture' => $request->recruitment_area_prefecture]);
 
-        return view('editPost', compact('post'), compact('tags_display_format'));
+        //中間テーブル更新
+        $post =  Post::find($post_id);
+
+        //新規登録
+        $tags_display_format = "";
+        if (isset($post_tag_datas)) {
+            //更新し直しするため、syncを使用
+            //(今まで紐づけされてた情報は不要で、リクエストでもらったタグ情報のみDBに保存される状態にする)
+            $post->tags()->sync($post_tag_datas);
+
+            $tags_display_format = $request->tag;
+        }
+
+        \Session::flash('flash_message', '更新が完了しました');
+
+        $before = parse_url(url()->previous(), PHP_URL_PASS);
+        $before_url = url()->previous();
+        return view('post', compact('post'), compact('tags_display_format'));
     }
 
     /**

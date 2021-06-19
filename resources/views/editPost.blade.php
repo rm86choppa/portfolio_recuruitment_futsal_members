@@ -6,7 +6,8 @@
         <div class="col-md-8">
             <div class="card">
                 <div class="card-body">
-                    <form method="post" action="{{ url('post/'.$post['id']) }}">
+                    <!-- 編集完了後の遷移先のURLをサーバ側から受け取った変数で指定 -->
+                    <form method="post" action="{{ url($URL) }}">
                         @csrf
                         @method('PUT')
                         <div class="form-group row">

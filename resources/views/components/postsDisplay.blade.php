@@ -22,7 +22,8 @@
                     <button type="submit" class="btn btn-primary col-md-7 border" onclick="document.getElementById('post_edit_form{{ $post->id }}').submit();">
                         {{ __('編集') }}
                     </button>
-                <form id="post_edit_form{{ $post->id }}" method="GET" action="{{ url('post/'.$post->id.'/edit') }}">
+                <!-- actionのURLは編集画面からの戻り先を受け取った変数を設定する -->
+                <form id="post_edit_form{{ $post->id }}" method="GET" action="{{ url($URL) }}">
                     @csrf
                     <button type="submit" class="btn btn-primary col-md-7 border" style="display:none">
                         {{ __('編集') }}
