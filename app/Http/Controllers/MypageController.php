@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Post;
 use App\User;
+use App\Tag;
 use Illuminate\Support\Facades\Hash;
 
 class MypageController extends Controller
@@ -17,10 +18,12 @@ class MypageController extends Controller
     public function index()
     {
         //全投稿情報取得(投稿に紐づくユーザ、タグ、いいね情報も取得)
-        //todo:いいね機能実装後、投稿に紐づくユーザ(いいねしたユーザ)の情報も取得が必要のためwithの引数に追加
-        $posts = Post::with('user', 'tags')->orderBy('updated_at', 'desc')->get();
+        $posts = Post::with('user', 'tags', 'likes')->orderBy('updated_at', 'desc')->get();
 
-        return view('mypage', compact('posts'));
+        //ログインユーザがいいねした投稿の一覧を表示するため、ユーザに紐づく投稿(いいねした投稿)を取得
+        $users = User::with('likes')->orderby('updated_at', 'desc')->get();
+
+        return view('mypage', compact('posts'), compact('users'));
     }
 
     /**
@@ -104,9 +107,20 @@ class MypageController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($postID)
     {
-        //
+        $post = Post::find($postID);
+
+        //タグ取得
+        $tags_display_format = "";
+        foreach ($post->tags as $tag) {
+            $tags_display_format = $tags_display_format.'＃'.$tag->tag;
+        }
+        
+        //編集画面での更新完了後の遷移先をマイページにするようURL情報を作成
+        $URL = 'mypage/'.$postID;
+
+        return view('editPost', compact('post', 'tags_display_format', 'URL'));
     }
 
     /**
@@ -116,9 +130,39 @@ class MypageController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $post_id)
     {
-        //
+        $tag = new Tag;
+        //タグを配列に変換
+        $afterSplitTags = $tag->splitByTag($request->tag);
+
+        //タグ登録
+        $post_tag_datas = $tag->insertTagData($afterSplitTags);
+
+        //投稿の更新
+        $result = Post::find($post_id)->update(['title' => $request->title, 
+                                                'recruitment_area' => $request->recruitment_area, 
+                                                'recruitment_level' => $request->recruitment_level, 
+                                                'practice_content' => $request->practice_content, 
+                                                'schedule' => $request->schedule, 
+                                                'recruitment_area_prefecture' => $request->recruitment_area_prefecture]);
+
+        //中間テーブル更新
+        $post =  Post::find($post_id);
+
+        //新規登録
+        $tags_display_format = "";
+        if (isset($post_tag_datas)) {
+            //更新し直しするため、syncを使用
+            //(今まで紐づけされてた情報は不要で、リクエストでもらったタグ情報のみDBに保存される状態にする)
+            $post->tags()->sync($post_tag_datas);
+
+            $tags_display_format = $request->tag;
+        }
+
+        \Session::flash('flash_message', '更新が完了しました');
+
+        return redirect('mypage');
     }
 
     /**

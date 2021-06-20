@@ -3,7 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use App\Post;
+use App\Tag;
 
 class PostRequest extends FormRequest
 {
@@ -36,8 +36,8 @@ class PostRequest extends FormRequest
                     $requestDatas = $this->all();
                     if (isset($requestDatas['tag'])) {
                         //タグをハッシュタグ毎に分割後の配列を作成
-                        $post = new Post;
-                        $afterSplitTags = $post->splitByTag($requestDatas['tag']);
+                        $tag = new Tag;
+                        $afterSplitTags = $tag->splitByTag($requestDatas['tag']);
 
                         //最終的なタグが30個を超えたらエラー
                         if (count($afterSplitTags) > 30) {

@@ -23,8 +23,6 @@ class PostController extends Controller
      */
     public function index()
     {
-        //compactで変数を渡してるが、未実装のためコメント
-        //return view('post', compact('posts'));
         return view('post');
     }
 
@@ -52,25 +50,20 @@ class PostController extends Controller
         //複数のDBを更新するため、一部の失敗等でのデータ不整合を防ぐためトランザクションを使用しDB更新が全て成功でコミット
         DB::beginTransaction();
         try {
-            $post = new Post;
-            $afterSplitTags = $post->splitByTag($requestDatas['tag']);
 
-            //タグをハッシュタグ毎に分ける
-            if (isset($afterSplitTags)){
-                //全タグデータ追加(ユニークなので既に登録済の部分は追加しない)
-                foreach ($afterSplitTags as $tagData) {
-                    //存在しないタグなら追加し追加データ取得、存在していたらデータ取得のみ
-                    $tagDatas = Tag::firstOrCreate(['tag' => $tagData]);
-                    $post_tag_datas[] = $tagDatas['id'];
-                }
+            $tag = new Tag;
+            //タグを配列に変換
+            $afterSplitTags = $tag->splitByTag($requestDatas['tag']);
 
-            }
+            //タグ登録
+            $post_tag_datas = $tag->insertTagData($afterSplitTags);
 
             //投稿の不要なデータ削除
             unset($requestDatas['_token']);
             unset($requestDatas['tag']);
 
             //投稿内容を新規追加
+            $post = new Post;
             $post->fill($requestDatas)->save();
 
             //追加した投稿のID取得
@@ -112,31 +105,78 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($postID)
     {
-        //
+        $post = Post::find($postID);
+
+        //タグ取得
+        $tags_display_format = "";
+        foreach ($post->tags as $tag) {
+            $tags_display_format = $tags_display_format.'＃'.$tag->tag;
+        }
+
+        //編集画面での更新完了後の遷移先をマイページにするようURL情報を作成
+        $URL = 'post/'.$postID;
+
+        return view('editPost', compact('post'), compact('tags_display_format'));
     }
 
     /**
-     * Update the specified resource in storage.
+     * タグ、投稿、中間テーブル(どの投稿にどのタグが紐づいてるか管理してるテーブル)の更新
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(PostRequest $request, $post_id)
     {
-        //
+        $tag = new Tag;
+        //タグを配列に変換
+        $afterSplitTags = $tag->splitByTag($request->tag);
+
+        //タグ登録
+        $post_tag_datas = $tag->insertTagData($afterSplitTags);
+
+        //投稿の更新
+        $result = Post::find($post_id)->update(['title' => $request->title, 
+                                                'recruitment_area' => $request->recruitment_area, 
+                                                'recruitment_level' => $request->recruitment_level, 
+                                                'practice_content' => $request->practice_content, 
+                                                'schedule' => $request->schedule, 
+                                                'recruitment_area_prefecture' => $request->recruitment_area_prefecture]);
+
+        //中間テーブル更新
+        $post =  Post::find($post_id);
+
+        //新規登録
+        $tags_display_format = "";
+        if (isset($post_tag_datas)) {
+            //更新し直しするため、syncを使用
+            //(今まで紐づけされてた情報は不要で、リクエストでもらったタグ情報のみDBに保存される状態にする)
+            $post->tags()->sync($post_tag_datas);
+
+            $tags_display_format = $request->tag;
+        }
+
+        \Session::flash('flash_message', '更新が完了しました');
+
+        $before = parse_url(url()->previous(), PHP_URL_PASS);
+        $before_url = url()->previous();
+        return view('post', compact('post'), compact('tags_display_format'));
     }
 
     /**
-     * Remove the specified resource from storage.
+     * 引数で受け取った投稿IDで検索して一致したレコード削除
      *
+     * @param  string $redirect_page
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($post_id)
     {
-        //
+        Post::find($post_id)->delete();
+
+        //元のページに遷移(表示は更新される)
+        return back();
     }
 }

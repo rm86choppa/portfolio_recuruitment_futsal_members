@@ -25,71 +25,43 @@
             </div>
 
             <div class="text-right mt-3">
-                <button type="submit" class="btn btn-primary switch_button col-md-2" onclick="location.href='#">
+                <button type="submit" class="btn btn-primary switch_button col-md-2" onclick="document.getElementById('myPosts').style.visibility =hidden;">
                     {{ __('切替') }}
                 </button>
             </div>
 
+
+            <!-- 自分がいいねした投稿をループ(初期値は非表示にし、自分の投稿を表示して切替できるようにする) -->
+            
+            <p>自分のいいねした投稿</p>
+            <div id="mylikedPosts" style="display: none;">
+            @foreach($users as $user)
+                <!-- ログインユーザの情報に紐づく投稿(自分がいいねしてる投稿)を表示 -->
+                @if($user->id == Auth::user()->id)
+                    <!-- ログインユーザの情報に紐づく投稿(自分がいいねしてる投稿)を表示 -->
+                    @foreach($user->likes as $post)
+                        <!-- 編集完了したらマイページに戻るよう引数で指定にする -->
+                        @component('components.postsDisplay', ['post' => $post,
+                                                               'URL'  => 'mypage/'.$post->id.'/edit' ])
+                        @endcomponent
+                    @endforeach
+                @endif
+            @endforeach
+            </div>
+            <p>自分のいいねした投稿end</p>
+
+           
+        <div id="myPosts">
             <!-- 全投稿をループ -->
             @foreach($posts as $post)
                 <!-- ログイン中のユーザの投稿のみ表示 -->
                 @if(Auth::user()->id == $post->user_id)
-                    <div class="card mt-3">
-                        <div class="card-header text-center">{{ __($post->title) }}</div>
-                        
-                        <div class="card-body">
-                            <label class="row col-md-12 col-form-label text-md-left name">{{ __($post->user->name) }}</label>
-                            <label class="row col-md-12 col-form-label text-md-left">{{ __($post->recruitment_area_prefecture) }} {{ __($post->recruitment_area) }}</label>
-                            <label class="row col-md-12 col-form-label text-md-left">{{ __($post->recruitment_level) }}</label>
-                            <label class="row col-md-12 col-form-label text-md-left">{{ __($post->practice_content) }}</label>
-                            <label class="row col-md-12 col-form-label text-md-left">{{ __($post->schedule) }}</label>
-                            <!-- 1投稿に紐づく全タグ情報表示 -->
-                            <div class="row col-md-12 ">
-                            @isset($post->tags)
-                                @foreach($post->tags as $tag)
-                                    @isset($tag)
-                                      <label class="text-md-left"><b>{{ __('#') }}</b> {{ __($tag->tag) }}</label>
-                                    @endisset
-                                @endforeach
-                            @endisset
-                            </div>
-                            <div class="row justify-content-center">
-                                <div class="btn-group">
-                                    <button type="submit" class="btn btn-primary col-md-7 border" onclick="location.href='#">
-                                        {{ __('編集') }}
-                                    </button>
-                                    <button type="submit" class="btn btn-danger col-md-7 border" onclick="document.getElementById('post_delete_form{{ $loop->index }}').submit();">
-                                        {{ __('削除') }}
-                                    </button>
-                                    <!-- ボタンをform内に配置するとボタンが横並びしないため、
-                                        表示上の削除ボタンが押下されたときonclickで隠れてるform内の削除ボタンのクリックイベントを発火する -->
-                                    <form id="post_delete_form{{ $loop->index }}" class="contents_Form" action="{{ url('post/'.$post->id) }}" method="post">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="btn btn-danger col-md-7 border" style="display:none">
-                                            {{ __('削除') }}
-                                        </button>
-                                    </form>
-                                </div>
-                                <div class="btn btn-link likes_btn">
-                                    <input type="hidden" name='post_id' id="post_id" value="{{ $post->id }}">
-                                    <input type="hidden" name='user_id' id="user_id" value="{{ Auth::user()->id }}">
-                                    <!-- 今処理してる投稿に自分がいいねしてるか調べていいね済アイコンか未いいねアイコンのどちらを表示するか判定 -->
-                                    <!-- 方法：今ループで処理してる投稿に紐づいてるいいねの中で自分(ログインユーザ)のidと一致してるレコードがあるか条件で検索 -->
-                                    @if($post->likes->where('id', Auth::user()->id)->count() >= 1)
-                                        <i class="far fa-heart hide">{{ $post->likes->count() }}</i>
-                                        <i class="fas fa-heart">{{ $post->likes->count() }}</i>
-                                    @else
-                                        <i class="far fa-heart">{{ $post->likes->count() }}</i>
-                                        <i class="fas fa-heart hide">{{ $post->likes->count() }}</i>
-                                    @endif
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                @component('components.postsDisplay', ['post' => $post,
+                                                       'URL'  => 'mypage/'.$post->id.'/edit' ])
+                @endcomponent
                 @endif
             @endforeach
-
+        </div>
         </div>
     </div>
 </div>

@@ -14,9 +14,9 @@ const mix = require('laravel-mix');
 mix.js('resources/js/app.js', 'public/js')
    .js('resources/js/delete_account.js', 'public/js')
    .js('resources/js/likes.js', 'public/js')
-   .js('resources/js/display_update.js', 'public/js')
    .js('resources/js/user_name_change.js', 'public/js')
    .js('resources/js/password_change.js', 'public/js')
+   .js('resources/js/display_switch.js', 'public/js')
    .sass('resources/sass/app.scss', 'public/css')
    .version()
    .sourceMaps();
