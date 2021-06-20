@@ -1,4 +1,4 @@
-<div class="btn-group">
+<div class="btn-group w-25">
     <button type="submit" class="btn btn-primary col-md-7 border" onclick="document.getElementById('post_application_form{{ $post->id }}').submit();">
         {{ __('応募') }}
     </button>
