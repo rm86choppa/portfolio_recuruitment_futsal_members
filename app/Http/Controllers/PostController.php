@@ -118,7 +118,7 @@ class PostController extends Controller
         //編集画面での更新完了後の遷移先をマイページにするようURL情報を作成
         $URL = 'post/'.$postID;
 
-        return view('editPost', compact('post'), compact('tags_display_format'));
+        return view('editPost', compact('post', 'tags_display_format', 'URL'));
     }
 
     /**
@@ -160,9 +160,7 @@ class PostController extends Controller
 
         \Session::flash('flash_message', '更新が完了しました');
 
-        $before = parse_url(url()->previous(), PHP_URL_PASS);
-        $before_url = url()->previous();
-        return view('post', compact('post'), compact('tags_display_format'));
+        return redirect('home');
     }
 
     /**
