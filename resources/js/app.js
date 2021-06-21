@@ -36,3 +36,6 @@ require('./likes');
 require('./user_name_change');
 require('./password_change');
 require('./display_switch');
+require('./tag_search');
+require('./all_post_display');
+require('./user_search');

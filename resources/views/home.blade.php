@@ -6,7 +6,8 @@
         <div class="col-md-8">
 
             <!-- homeオプション(タグでの一覧、ユーザ毎の一覧、応募順) -->
-            @component('components.homeOption')
+            @component('components.homeOption', ['tags' => $tags,
+                                                 'users' => $users])
             @endcomponent
 
             <!-- 全ての投稿を表示 -->
@@ -14,10 +15,12 @@
                 <p class="text-success">投稿一覧</p>
                 <!-- 全投稿をループ -->
                 @foreach($posts as $post)
-                    <!-- 編集完了したらホームに戻るよう引数で指定にする -->
-                    @component('components.postsDisplay', ['post' => $post,
-                                                           'URL'  => 'post/'.$post->id.'/edit' ])
-                    @endcomponent
+                    <div class="post">
+                        <!-- 編集完了したらホームに戻るよう引数で指定にする -->
+                        @component('components.postsDisplay', ['post' => $post,
+                                                            'URL'  => 'post/'.$post->id.'/edit' ])
+                        @endcomponent
+                    </div>
                 @endforeach
             </div>
         </div>

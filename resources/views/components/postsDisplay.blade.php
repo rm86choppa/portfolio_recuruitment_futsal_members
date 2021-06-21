@@ -4,9 +4,9 @@
     <div class="card-body">
         <!-- 今処理してる投稿が自分の投稿なら自分の投稿だとわかるようクラス名をつける(ユーザ名変更で使用するクラス名) -->
         @if($post->user_id == Auth::user()->id)
-            <label class="row col-md-12 col-form-label text-md-left myPostName">{{ __($post->user->name) }}</label>
+            <label class="row col-md-12 col-form-label text-md-left myPostName search_user_name">{{ __($post->user->name) }}</label>
         @else
-            <label class="row col-md-12 col-form-label text-md-left otherUserName">{{ __($post->user->name) }}</label>
+            <label class="row col-md-12 col-form-label text-md-left otherUserName search_user_name">{{ __($post->user->name) }}</label>
         @endif
         <label class="row col-md-12 col-form-label text-md-left">{{ __($post->recruitment_area_prefecture) }} : {{ __($post->recruitment_area) }}</label>
         <label class="row col-md-12 col-form-label text-md-left">{{ __($post->recruitment_level) }}</label>
@@ -17,7 +17,7 @@
         @isset($post->tags)
             @foreach($post->tags as $tag)
                 @isset($tag)
-                  <label class="text-md-left"><b>{{ __('#') }}</b> {{ __($tag->tag) }}</label>
+                  <label class="text-md-left tag"><b>{{ __('#') }}</b> {{ __($tag->tag) }}</label>
                 @endisset
             @endforeach
         @endisset

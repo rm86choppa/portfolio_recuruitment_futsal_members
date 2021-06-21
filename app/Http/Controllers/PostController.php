@@ -23,7 +23,7 @@ class PostController extends Controller
      */
     public function index()
     {
-        return view('post');
+        return view('newPost');
     }
 
     /**
@@ -51,12 +51,16 @@ class PostController extends Controller
         DB::beginTransaction();
         try {
 
-            $tag = new Tag;
-            //タグを配列に変換
-            $afterSplitTags = $tag->splitByTag($requestDatas['tag']);
+            if(isset($requestDatas['tag'])) {
+                $tag = new Tag;
+                //タグを配列に変換
+                $afterSplitTags = $tag->splitByTag($requestDatas['tag']);
 
-            //タグ登録
-            $post_tag_datas = $tag->insertTagData($afterSplitTags);
+                if(isset($afterSplitTags)) {
+                    //タグ登録
+                    $post_tag_datas = $tag->insertTagData($afterSplitTags);
+                }
+            }
 
             //投稿の不要なデータ削除
             unset($requestDatas['_token']);

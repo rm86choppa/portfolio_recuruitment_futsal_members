@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Post;
 use App\User;
+use App\Tag;
 
 class HomeController extends Controller
 {
@@ -31,6 +32,9 @@ class HomeController extends Controller
         //ユーザの投稿一覧を表示する情報取得
         $users = User::with('posts')->orderby('updated_at', 'desc')->get();
 
-        return view('home', compact('posts'), compact('users'));
+        //タグを選択し、選択したタグに紐づく投稿を取得する
+        $tags = Tag::with('posts')->orderby('updated_at', 'desc')->get();
+
+        return view('home', compact('posts', 'users', 'tags'));
     }
 }
