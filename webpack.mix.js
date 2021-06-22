@@ -20,6 +20,7 @@ mix.js('resources/js/app.js', 'public/js')
    .js('resources/js/tag_search.js', 'public/js')
    .js('resources/js/all_post_display.js', 'public/js')
    .js('resources/js/user_search.js', 'public/js')
+   .js('resources/js/applications.js', 'public/js')
    .sass('resources/sass/app.scss', 'public/css')
    .version()
    .sourceMaps();

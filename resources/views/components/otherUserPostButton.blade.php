@@ -1,14 +1,17 @@
 <div class="btn-group w-25">
-    <button type="submit" class="btn btn-primary col-md-7 border" onclick="document.getElementById('post_application_form{{ $post->id }}').submit();">
-        {{ __('応募') }}
-    </button>
-    <!-- actionのURLは編集画面からの戻り先を受け取った変数を設定する -->
-    <form id="post_application_form{{ $post->id }}" method="GET" action="{{ url($URL) }}">
-        @csrf
-        <button type="submit" class="btn btn-primary col-md-7 border" style="display:none">
+
+    <input type="hidden" name='post_id' id="application_post_id" value="{{ $post->id }}">
+    <input type="hidden" name='user_id' id="application_user_id" value="{{ Auth::user()->id }}">
+
+    @if($post->applications->where('id', Auth::user()->id)->count() >= 1)
+        <button type="submit" class="btn btn-primary col-md-7 border application_button">
+            {{ __('応募取消') }}
+        </button>
+    @else
+        <button type="submit" class="btn btn-primary col-md-7 border application_button">
             {{ __('応募') }}
         </button>
-    </form>
+    @endif
     <button type="submit" class="btn btn-primary col-md-7 border" onclick="document.getElementById('post_chat_form{{ $post->id }}').submit();">
         {{ __('チャット') }}
     </button>

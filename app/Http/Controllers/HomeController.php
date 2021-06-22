@@ -27,7 +27,7 @@ class HomeController extends Controller
     public function index()
     {
         //全投稿情報取得(投稿に紐づくユーザ、タグ、いいね情報も取得)
-        $posts = Post::with('user', 'tags', 'likes')->orderBy('updated_at', 'desc')->get();
+        $posts = Post::with('user', 'tags', 'likes', 'applications')->orderBy('updated_at', 'desc')->get();
 
         //ユーザの投稿一覧を表示する情報取得
         $users = User::with('posts')->orderby('updated_at', 'desc')->get();

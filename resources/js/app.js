@@ -39,3 +39,4 @@ require('./display_switch');
 require('./tag_search');
 require('./all_post_display');
 require('./user_search');
+require('./applications');

@@ -54,4 +54,9 @@ class User extends Authenticatable implements MustVerifyEmail
     public function likes() {
         return $this->belongsToMany('App\Post', 'likes')->withTimestamps();
     }
+
+    //応募機能のリレーション
+    public function applications() {
+        return $this->belongsToMany('App\Post', 'application_informations')->withTimestamps();
+    }
 }
