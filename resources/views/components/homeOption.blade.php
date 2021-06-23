@@ -7,9 +7,7 @@
             </button>
 
             <div class="dropdown">
-                <button type="button" id="tag_button" class="btn btn-primary dropdown-toggle home_option_button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    タグ　　　　
-                </button>
+                <button type="button" id="tag_button" class="btn btn-primary dropdown-toggle home_option_button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">タグ</button>
                 <div class="dropdown-menu" id="tag_menu">
                     @foreach($tags as $tag)
                         <a class="dropdown-item dropdown-item_tag" href="#" data-value="{{ $tag->tag }}">{{ $tag->tag }}</a>
@@ -18,9 +16,7 @@
             </div>
 
             <div class="dropdown">
-                <button type="button" class="btn btn-primary dropdown-toggle home_option_button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    ユーザ　　　
-                </button>
+                <button type="button" class="btn btn-primary dropdown-toggle home_option_button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">ユーザ</button>
                 <div class="dropdown-menu" id="tag_menu">
                     @foreach($users as $user)
                         <a class="dropdown-item dropdown-item_user" href="#" data-value="{{ $user->name }}">{{ $user->name }}</a>
