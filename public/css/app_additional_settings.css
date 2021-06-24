@@ -44,6 +44,24 @@
  }
 
  .create_new_button {
-  background-color: #36A420;
+   background-color: #36A420;
    border-color:#36A420;
+ }
+
+ .home_option_button_left {
+  border-radius: 0.3rem 0 0 0.3rem;
+  font-size: 1.125rem;
+  border: 1px solid #dee2e6 !important;
+ }
+
+ .home_option_button_right {
+  border-radius: 0 0.3rem 0.3rem 0;
+  font-size: 1.125rem;
+  border: 1px solid #dee2e6 !important;
+ }
+
+ .home_option_button {
+   font-size: 1.125rem;
+   border: 1px solid #dee2e6 !important;
+   border-radius: 0 0 0 0;
  }

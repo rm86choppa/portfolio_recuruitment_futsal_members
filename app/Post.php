@@ -24,4 +24,9 @@ class Post extends Model
     public function likes() {
        return $this->belongsToMany('App\User', 'likes')->withTimestamps();
     }
+
+    //応募機能のリレーション
+    public function applications() {
+        return $this->belongsToMany('App\User', 'application_informations')->withTimestamps();
+    }
 }

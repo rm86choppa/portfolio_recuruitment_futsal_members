@@ -18,7 +18,7 @@ class MypageController extends Controller
     public function index()
     {
         //全投稿情報取得(投稿に紐づくユーザ、タグ、いいね情報も取得)
-        $posts = Post::with('user', 'tags', 'likes')->orderBy('updated_at', 'desc')->get();
+        $posts = Post::with('user', 'tags', 'likes', 'applications')->orderBy('updated_at', 'desc')->get();
 
         //ログインユーザがいいねした投稿の一覧を表示するため、ユーザに紐づく投稿(いいねした投稿)を取得
         $users = User::with('likes')->orderby('updated_at', 'desc')->get();

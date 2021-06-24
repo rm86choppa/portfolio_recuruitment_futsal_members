@@ -23,7 +23,7 @@ class PostController extends Controller
      */
     public function index()
     {
-        return view('post');
+        return view('newPost');
     }
 
     /**
@@ -51,12 +51,16 @@ class PostController extends Controller
         DB::beginTransaction();
         try {
 
-            $tag = new Tag;
-            //タグを配列に変換
-            $afterSplitTags = $tag->splitByTag($requestDatas['tag']);
+            if(isset($requestDatas['tag'])) {
+                $tag = new Tag;
+                //タグを配列に変換
+                $afterSplitTags = $tag->splitByTag($requestDatas['tag']);
 
-            //タグ登録
-            $post_tag_datas = $tag->insertTagData($afterSplitTags);
+                if(isset($afterSplitTags)) {
+                    //タグ登録
+                    $post_tag_datas = $tag->insertTagData($afterSplitTags);
+                }
+            }
 
             //投稿の不要なデータ削除
             unset($requestDatas['_token']);
@@ -118,7 +122,7 @@ class PostController extends Controller
         //編集画面での更新完了後の遷移先をマイページにするようURL情報を作成
         $URL = 'post/'.$postID;
 
-        return view('editPost', compact('post'), compact('tags_display_format'));
+        return view('editPost', compact('post', 'tags_display_format', 'URL'));
     }
 
     /**
@@ -160,9 +164,7 @@ class PostController extends Controller
 
         \Session::flash('flash_message', '更新が完了しました');
 
-        $before = parse_url(url()->previous(), PHP_URL_PASS);
-        $before_url = url()->previous();
-        return view('post', compact('post'), compact('tags_display_format'));
+        return redirect('home');
     }
 
     /**

@@ -40,6 +40,9 @@ Route::resource('mypage', 'MypageController', ['only' => ['index', 'create', 'st
 //いいね機能のルート
 Route::get('/likes', 'LikesController')->middleware('verified');
 
+//応募機能のルート
+Route::get('/application', 'ApplicationController')->middleware('verified');
+
 //ユーザネーム変更機能のルート
 Route::get('/name_change', 'MypageController@nameChange')->middleware('verified');
 

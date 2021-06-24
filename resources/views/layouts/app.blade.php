@@ -60,11 +60,9 @@
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav mr-auto">
-
                     </ul>
 
                     <!-- Right Side Of Navbar -->
@@ -80,17 +78,28 @@
                                 </li>
                             @endif
                         @else
+                            <!-- 現在のURLがhomeのとき、キーワード検索を表示 -->
+                            @if(strpos(url()->current(), 'home') !== false)
+                                <li class="nav-item">
+                                <p>検索の入力ボックス配置予定</p>
+                                </li>
+                            @endif
+
                             <li class="nav-item dropdown">
                                 @if(Auth::user()->name )
-                                    <a id="navbarDropdown" class="nav-link dropdown-toggle name" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                    <a id="navbarDropdown" class="nav-link dropdown-toggle myPostName" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                         {{ Auth::user()->name }} <span class="caret"></span>
                                     </a>
                                 @else
-                                    <a id="navbarDropdown" class="nav-link dropdown-toggle name" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                    <a id="navbarDropdown" class="nav-link dropdown-toggle myPostName" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                         {{ 'ゲスト' }} <span class="caret"></span>
                                     </a>
                                 @endif
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item" href="{{ url('home') }}">
+                                        {{ __('ホーム') }}
+                                    </a>
+
                                     <a class="dropdown-item" href="{{ url('mypage') }}">
                                         {{ __('マイページ') }}
                                     </a>

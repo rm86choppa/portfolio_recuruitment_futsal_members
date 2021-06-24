@@ -3,19 +3,25 @@
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">Dashboard</div>
+        <div class="col-md-9">
 
-                <div class="card-body">
-                    @if (session('status'))
-                        <div class="alert alert-success" role="alert">
-                            {{ session('status') }}
-                        </div>
-                    @endif
+            <!-- homeオプション(タグでの一覧、ユーザ毎の一覧、応募順) -->
+            @component('components.homeOption', ['tags' => $tags,
+                                                 'users' => $users])
+            @endcomponent
 
-                    投稿一覧画面作成予定
-                </div>
+            <!-- 全ての投稿を表示 -->
+            <div id="allPosts">
+                <p class="text-success">投稿一覧</p>
+                <!-- 全投稿をループ -->
+                @foreach($posts as $post)
+                    <div class="post">
+                        <!-- 編集完了したらホームに戻るよう引数で指定にする -->
+                        @component('components.postsDisplay', ['post' => $post,
+                                                            'URL'  => 'post/'.$post->id.'/edit' ])
+                        @endcomponent
+                    </div>
+                @endforeach
             </div>
         </div>
     </div>
