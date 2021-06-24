@@ -24,7 +24,7 @@
                 </div>
             </div>
 
-            <button type="button" class="btn btn-primary home_option_button">
+            <button type="button" id="sort_button" class="btn btn-primary home_option_button" onclick="location.href='/sort'">
                 応募順
             </button>
 

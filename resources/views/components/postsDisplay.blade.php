@@ -12,6 +12,9 @@
         <label class="row col-md-12 col-form-label text-md-left">{{ __($post->recruitment_level) }}</label>
         <label class="row col-md-12 col-form-label text-md-left">{{ __($post->practice_content) }}</label>
         <label class="row col-md-12 col-form-label text-md-left">{{ __($post->schedule) }}</label>
+        @isset($post->applications_count)
+            <label class="row col-md-12 col-form-label text-md-left"><span>応募数：</span>{{ __($post->applications_count) }}</label>
+        @endisset
         <!-- 1投稿に紐づく全タグ情報表示 -->
         <div class="row col-md-12 ">
         @isset($post->tags)
