@@ -11,17 +11,10 @@
             @endcomponent
 
             <!-- 全ての投稿を表示 -->
+            <p class="text-success">投稿一覧</p>
             <div id="allPosts">
-                <p class="text-success">投稿一覧</p>
-                <!-- 全投稿をループ -->
-                @foreach($posts as $post)
-                    <div class="post">
-                        <!-- 編集完了したらホームに戻るよう引数で指定にする -->
-                        @component('components.postsDisplay', ['post' => $post,
-                                                            'URL'  => 'post/'.$post->id.'/edit' ])
-                        @endcomponent
-                    </div>
-                @endforeach
+                @component('components.postsDisplayCallFromHome', ['posts' => $posts])
+                @endcomponent
             </div>
         </div>
     </div>
