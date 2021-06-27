@@ -65,3 +65,35 @@
    border: 1px solid #dee2e6 !important;
    border-radius: 0 0 0 0;
  }
+
+/* modal-2 */
+.modal.right.fade .modal-dialog {
+  -webkit-transform: translate(25%,0);
+  transform: translate(25%,0);
+}
+.modal.right.show .modal-dialog {
+  -webkit-transform: translate(0,0);
+  transform: translate(0,0);
+}
+#modal-2 .modal-dialog {
+  max-width: 200px;
+  margin: 0;
+  height: 100%;
+}
+#modal-2 .modal-content {
+  height: 100%;
+  border: none;
+  border-radius: 0;
+}
+#modal-2 .modal-header {
+  display: block;
+}
+#modal-2 .modal-title {
+  display: inline-block;
+}
+#modal-2 .modal-body {
+  overflow-y: scroll;
+}
+.modal {
+  padding-right: 0px !important;
+}

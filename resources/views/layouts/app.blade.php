@@ -13,12 +13,17 @@
     <script src="{{ asset('js/app.js') }}" defer></script>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-    
+
     <script>
         // モーダルウィンドウ
         $(window).on('load',function(){
             $('#myModal').modal('show');
         });
+
+        //ツールチップ
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip()
+          })
     </script>
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
@@ -80,9 +85,9 @@
                         @else
                             <!-- 現在のURLがhomeのとき、キーワード検索を表示 -->
                             @if(strpos(url()->current(), 'home') !== false)
-                                <li class="nav-item">
-                                <p>検索の入力ボックス配置予定</p>
-                                </li>
+                                <form class="d-flex">
+                                    <input id="search_bar" data-toggle="tooltip" data-html="true" data-trigger="manual" data-placement="bottom" class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                                </form>
                             @endif
 
                             <li class="nav-item dropdown">

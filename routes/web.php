@@ -50,4 +50,4 @@ Route::get('/name_change', 'MypageController@nameChange')->middleware('verified'
 Route::get('/password_change', 'MypageController@passwordChange')->middleware('verified');
 
 //並び替え機能のルート
-Route::get('/sort', 'HomeController@sort')->middleware('verified');
+Route::get('/home/sort', 'HomeController@sort')->middleware('verified');
