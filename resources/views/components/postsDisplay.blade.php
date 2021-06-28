@@ -1,5 +1,5 @@
 <div class="card mt-3">
-    <div class="card-header text-center">{{ __($post->title) }}</div>
+    <div class="card-header text-center tooltip_title">{{ __($post->title) }}</div>
     
     <div class="card-body">
         <!-- 今処理してる投稿が自分の投稿なら自分の投稿だとわかるようクラス名をつける(ユーザ名変更で使用するクラス名) -->

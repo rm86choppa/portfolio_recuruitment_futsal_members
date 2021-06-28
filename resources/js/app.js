@@ -40,3 +40,4 @@ require('./tag_search');
 require('./all_post_display');
 require('./user_search');
 require('./applications');
+require('./search_bar');
