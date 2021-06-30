@@ -41,3 +41,4 @@ require('./all_post_display');
 require('./user_search');
 require('./applications');
 require('./search_bar');
+require('./email_change');

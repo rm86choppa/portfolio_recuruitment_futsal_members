@@ -51,3 +51,7 @@ Route::get('/password_change', 'MypageController@passwordChange')->middleware('v
 
 //並び替え機能のルート
 Route::get('/home/sort', 'HomeController@sort')->middleware('verified');
+
+//メールアドレス変更機能のルート
+Route::get('/email', 'ChangeEmailController@sendChangeEmailLink')->middleware('verified');//メール送信
+Route::get("reset/{token}", "ChangeEmailController@reset");//メール登録(メール内リンククリック後)
