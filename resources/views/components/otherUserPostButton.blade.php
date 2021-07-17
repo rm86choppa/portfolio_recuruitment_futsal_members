@@ -17,9 +17,11 @@
     </button>
     <!-- ボタンをform内に配置するとボタンが横並びしないため、
         表示上の削除ボタンが押下されたときonclickで隠れてるform内の削除ボタンのクリックイベントを発火する -->
-    <form id="post_chat_form{{ $post->id }}" class="contents_Form" action="{{ url('post/'.$post->id) }}" method="post">
+    <form id="post_chat_form{{ $post->id }}" class="contents_Form" action="{{ url('chat/') }}" method="POST">
         @csrf
-        @method('DELETE')
+        <input type="hidden" name='post_id' id="post_id" value="{{ $post->id }}">
+        <input type="hidden" name='user_id' id="user_id" value="{{ Auth::user()->id }}">
+        <input type="hidden" name='chat_start_user_id' id="chat_start_user_id" value="{{ Auth::user()->id }}">
         <button type="submit" class="btn btn-primary col-md-7 border" style="display:none">
             {{ __('チャット') }}
         </button>

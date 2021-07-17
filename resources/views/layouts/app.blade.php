@@ -11,10 +11,9 @@
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
-    <script src="{{ asset('js/chat.js') }}" defer></script>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-    <script src="https://js.pusher.com/4.0/pusher.min.js"></script>
+    <script src="https://js.pusher.com/5.0/pusher.min.js"></script>
     <script>
         // モーダルウィンドウ
         $(window).on('load',function(){
@@ -25,19 +24,6 @@
         $(function () {
             $('[data-toggle="tooltip"]').tooltip()
           })
-
-          
-// Enable pusher logging - don't include this in production
-//Pusher.logToConsole = true;
-
-var pusher = new Pusher("{{ config('const.pusher.app_key') }}", {
-    cluster: "{{ config('const.pusher.cluster') }}"
-});
-
-var channel = pusher.subscribe('chat-channel');
-channel.bind('PusherChat', function(data) {
-    alert(JSON.stringify(data));
-});
     </script>
     
     <!-- Fonts -->

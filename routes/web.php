@@ -56,5 +56,6 @@ Route::get('/home/sort', 'HomeController@sort')->middleware('verified');
 Route::get('/email', 'ChangeEmailController@sendChangeEmailLink')->middleware('verified');//メール送信
 Route::get("reset/{token}", "ChangeEmailController@reset");//メール登録(メール内リンククリック後)
 
-Route::get('/chat', 'ChatController@index')->middleware('verified');
+//チャット機能のルート
+Route::post('/chat', 'ChatController@index')->middleware('verified');
 Route::get('/chat/send', 'ChatController@chatSend')->middleware('verified');

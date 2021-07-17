@@ -36,10 +36,17 @@ window.Echo = new Echo({
     broadcaster: 'pusher',
     key: process.env.MIX_PUSHER_APP_KEY,
     cluster: process.env.MIX_PUSHER_APP_CLUSTER,
-    encrypted: false,
+    //encrypted: false,
+    forceTLS: false,
 });
+/*
+window.Echo.channel('chat-channel')
+    .listen('PusherChat', function(data) {
+        console.log(data);
+    });
+*/
 
 window.Echo.channel('chat-channel')
-    .listen('PusherChat', (e) => {
-        console.log(e);
+    .listen('PusherChat', (data) => {
+        console.log(data);
     });

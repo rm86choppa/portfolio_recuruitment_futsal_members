@@ -1,13 +1,42 @@
 @extends('layouts.app')
 
 @section('content')
+<!-- チャット送信する際のDBへの保存情報 -->
+<input type="hidden" name='post_id' id="chat_post_id" value="{{ $post->id }}">
+<input type="hidden" name='user_id' id="chat_user_id" value="{{ Auth::user()->id }}">
+<!-- チャットする際のチャンネル作成で必要なチャットを開始したユーザID(チャット開始したユーザが自分じゃないときもあるので注意。
+    チャットをするのにユニークなチャンネル名にしてほかのユーザにも通知されたりしないため必要) -->
+<input type="hidden" name='chat_start_user_id' id="chat_start_user_id" value="{{ $chat_start_user_id }}">
 
-    <h1>Pusher Test</h1>
-<p>
-    Try publishing an event to channel <code>my-channel</code>
-    with event name <code>my-event</code>.
-</p>
-<a id="chat_link" href="{{ url('/chat') }}">
-    {{ 'chat' }}
-</a>
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="chat_history col-md-10">
+            @foreach($chats as $chat)
+                <!-- 今処理してるチャット情報が、自分のチャットなら右側に、相手の投稿なら左側に表示 -->
+                @if($chat->send_user_id == Auth::user()->id)
+                    <!-- 自分の投稿(右側表示) -->
+                    <div class="my_chat container mt-3 col-md-8 float-right">
+                        <p class="chat_content_text bg-success text-white rounded-pill  p-5">{{ $chat->chat_content }}</p>
+                        <p class="date">{{ $chat->updated_at }}</p>
+                    </div>
+                @else
+                    <!-- 相手の投稿(左側表示) -->
+                    <div class="other_chat container mt-3 col-md-8 float-left">
+                        <p class="chat_content_text bg-primary text-white rounded-pill p-5">{{ $chat->chat_content }}</p>
+                        <p class="date">{{ $chat->updated_at }}</p>
+                    </div>
+                @endif
+            @endforeach
+        </div>
+        <div class="fixed-bottom col-md-12 bg-white shadow-sm text-center">
+            <div class= "col-md-12">
+                <textarea id="chat_content" name="chat_content" class="col-md-7 align-bottom" cols="40" rows="3" placeholder="チャット内容">{{ old('chat-content') }}</textarea>
+                <button id="chat_send_button" type="submit" class="btn btn-primary">
+                    {{ __('送信') }}
+                </button>
+            </div>
+            
+        </div>
+    </div>
+</div>
 @endsection

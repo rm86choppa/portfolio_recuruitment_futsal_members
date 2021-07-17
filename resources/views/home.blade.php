@@ -12,7 +12,8 @@
             <!-- 全ての投稿を表示 -->
             <p class="text-success">投稿一覧</p>
             <div id="allPosts">
-                @component('components.postsDisplayCallFromHome', ['posts' => $posts])
+                @component('components.postsDisplayCallFromHome', ['posts' => $posts, 
+                                                                   'all_users' => $all_users])
                 @endcomponent
             </div>
         </div>

@@ -29,4 +29,10 @@ class Post extends Model
     public function applications() {
         return $this->belongsToMany('App\User', 'application_informations')->withTimestamps();
     }
+
+    //チャット機能のリレーション(一投稿に対して、チャットしたユーザを複数人重複を排除して取得するため一対多でのリレーション)
+    public function chats() {
+        return $this->hasMany('App\Chat');
+    }
+
 }

@@ -42,3 +42,4 @@ require('./user_search');
 require('./applications');
 require('./search_bar');
 require('./email_change');
+require('./chat');

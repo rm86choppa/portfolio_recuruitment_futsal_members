@@ -59,4 +59,9 @@ class User extends Authenticatable implements MustVerifyEmail
     public function applications() {
         return $this->belongsToMany('App\Post', 'application_informations')->withTimestamps();
     }
+
+    //チャット機能のリレーション
+    public function chats() {
+        return $this->belongsToMany('App\User', 'chats', 'send_user_id', 'post_id')->withTimestamps();
+    }
 }

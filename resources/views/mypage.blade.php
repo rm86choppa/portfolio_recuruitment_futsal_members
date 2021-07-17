@@ -21,7 +21,8 @@
                         @foreach($user->likes as $post)
                             <!-- 編集完了したらマイページに戻るよう引数で指定にする -->
                             @component('components.postsDisplay', ['post' => $post,
-                                                                   'URL'  => 'mypage/'.$post->id.'/edit' ])
+                                                                   'URL'  => 'mypage/'.$post->id.'/edit', 
+                                                                   'all_users' => $all_users])
                             @endcomponent
                         @endforeach
                     @endif
@@ -35,7 +36,8 @@
                     <!-- ログイン中のユーザの投稿のみ表示 -->
                     @if(Auth::user()->id == $post->user_id)
                     @component('components.postsDisplay', ['post' => $post,
-                                                           'URL'  => 'mypage/'.$post->id.'/edit' ])
+                                                           'URL'  => 'mypage/'.$post->id.'/edit', 
+                                                           'all_users' => $all_users ])
                     @endcomponent
                     @endif
                 @endforeach
