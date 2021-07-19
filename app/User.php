@@ -64,4 +64,10 @@ class User extends Authenticatable implements MustVerifyEmail
     public function chats() {
         return $this->belongsToMany('App\User', 'chats', 'send_user_id', 'post_id')->withTimestamps();
     }
+
+    //フォロー機能のリレーション(フォローしているユーザ情報取得)
+    public function follows()
+    {
+        return $this->belongsToMany('App\User', "follows", "user_id", "followed_user_id")->withTimestamps();
+    }
 }

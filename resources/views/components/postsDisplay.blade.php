@@ -74,6 +74,25 @@
                     <i class="fas fa-heart hide">{{ $post->likes->count() }}</i>
                 @endif
             </div>
+            <!-- フォローリンク(相手の投稿のときのみ表示) -->
+            @if($post->user_id !== Auth::user()->id)
+                <div class="btn btn-link follow_btn">
+                    <input type="hidden" name='followed_user_id' id="followed_user_id" value="{{ $post->user_id }}">
+                    <input type="hidden" name='user_id' id="user_id" value="{{ Auth::user()->id }}">
+                    
+                    <!-- 今、処理してる投稿の投稿ユーザに対してフォローしていたら「フォロー解除」、未フォローなら「フォローする」と表示 -->
+                    @php
+                        $my_user = $all_users->where('id', Auth::user()->id)->first();
+                        
+                        $followed_user = $my_user->follows->where('id', $post->user_id)->first();
+                    @endphp
+                    @isset($followed_user)
+                        <a class="follow_link" href="{{ url('/follow') }}">{{ 'フォロー解除' }}</a>   
+                    @else
+                        <a class="follow_link" href="{{ url('/follow') }}">{{ 'フォローする' }}</a> 
+                    @endisset
+                </div>
+            @endif
         </div>
     </div>
 </div>

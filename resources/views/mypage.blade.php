@@ -5,9 +5,10 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
 
-            <!-- マイページのオプション機能(ユーザ名変更、パス変更、アドレス変更、切替(自身の投稿、いいねした投稿)) -->
+            <!-- マイページのオプション機能(ユーザ名変更、パス変更、アドレス変更、切替(自身の投稿、いいねした投稿))、フォロー一覧 -->
             @component('components.mypageOption', ['name' => Auth::user()->name,
-                                                   'email'  => Auth::user()->email ])
+                                                   'email'  => Auth::user()->email,
+                                                   'all_users' => $all_users ])
             @endcomponent
 
 

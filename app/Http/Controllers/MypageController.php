@@ -23,7 +23,7 @@ class MypageController extends Controller
         $posts = Post::with('user', 'tags', 'likes', 'applications', 'chats')->orderBy('updated_at', 'desc')->get();
 
         //チャットを開始したユーザIDを取得するため全ユーザ取得
-        $all_users = DB::table('users')->select('id', 'name');
+        $all_users = User::with('follows')->get();
 
         //ログインユーザがいいねした投稿の一覧を表示するため、ユーザに紐づく投稿(いいねした投稿)を取得
         $users = User::with('likes')->orderby('updated_at', 'desc')->get();

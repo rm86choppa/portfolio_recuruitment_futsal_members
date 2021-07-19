@@ -43,3 +43,4 @@ require('./applications');
 require('./search_bar');
 require('./email_change');
 require('./chat');
+require('./follow');
