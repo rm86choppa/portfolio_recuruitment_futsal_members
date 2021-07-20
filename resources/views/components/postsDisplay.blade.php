@@ -4,9 +4,28 @@
     <div class="card-body">
         <!-- 今処理してる投稿が自分の投稿なら自分の投稿だとわかるようクラス名をつける(ユーザ名変更で使用するクラス名) -->
         @if($post->user_id == Auth::user()->id)
-            <label class="row col-md-12 col-form-label text-md-left myPostName search_user_name">{{ __($post->user->name) }}</label>
+            <label class="col-form-label text-md-left myPostName search_user_name">{{ __($post->user->name) }}</label>
         @else
-            <label class="row col-md-12 col-form-label text-md-left otherUserName search_user_name">{{ __($post->user->name) }}</label>
+            <label class="col-form-label text-md-left otherUserName search_user_name">{{ __($post->user->name) }}</label>
+        @endif
+        <!-- フォローリンク(相手の投稿のときのみ表示) -->
+        @if($post->user_id !== Auth::user()->id)
+            <div class="btn btn-link follow_btn">
+                <input type="hidden" name='followed_user_id' id="followed_user_id" value="{{ $post->user_id }}">
+                <input type="hidden" name='user_id' id="user_id" value="{{ Auth::user()->id }}">
+                
+                <!-- 今、処理してる投稿の投稿ユーザに対してフォローしていたら「フォロー解除」、未フォローなら「フォローする」と表示 -->
+                @php
+                    $my_user = $all_users->where('id', Auth::user()->id)->first();
+                    
+                    $followed_user = $my_user->follows->where('id', $post->user_id)->first();
+                @endphp
+                @isset($followed_user)
+                    <a class="follow_link" href="{{ url('/follow') }}">{{ 'フォロー解除' }}</a>   
+                @else
+                    <a class="follow_link" href="{{ url('/follow') }}">{{ 'フォローする' }}</a> 
+                @endisset
+            </div>
         @endif
         <label class="row col-md-12 col-form-label text-md-left">{{ __($post->recruitment_area_prefecture) }} : {{ __($post->recruitment_area) }}</label>
         <label class="row col-md-12 col-form-label text-md-left">{{ __($post->recruitment_level) }}</label>
@@ -20,7 +39,7 @@
             <div class="row col-md-12 ">
                 @if($post->chats->whereNotIn('send_user_id', Auth::user()->id)->groupBy('send_user_id')->count() >= 1)
                     <?php $chats = $post->chats->whereNotIn('send_user_id', Auth::user()->id)->groupBy('send_user_id'); ?>
-                    <?php echo('チャットユーザ：'); ?>
+                    <?php echo('チャットユーザ'); ?><i class="fa fa-2x fa-envelope-square"></i>
                         @foreach($chats as $chat_send_user)
                             @php
                                 $chat_user_data = $all_users->where('id', $chat_send_user[0]->send_user_id)->first(); 
@@ -74,25 +93,6 @@
                     <i class="fas fa-heart hide">{{ $post->likes->count() }}</i>
                 @endif
             </div>
-            <!-- フォローリンク(相手の投稿のときのみ表示) -->
-            @if($post->user_id !== Auth::user()->id)
-                <div class="btn btn-link follow_btn">
-                    <input type="hidden" name='followed_user_id' id="followed_user_id" value="{{ $post->user_id }}">
-                    <input type="hidden" name='user_id' id="user_id" value="{{ Auth::user()->id }}">
-                    
-                    <!-- 今、処理してる投稿の投稿ユーザに対してフォローしていたら「フォロー解除」、未フォローなら「フォローする」と表示 -->
-                    @php
-                        $my_user = $all_users->where('id', Auth::user()->id)->first();
-                        
-                        $followed_user = $my_user->follows->where('id', $post->user_id)->first();
-                    @endphp
-                    @isset($followed_user)
-                        <a class="follow_link" href="{{ url('/follow') }}">{{ 'フォロー解除' }}</a>   
-                    @else
-                        <a class="follow_link" href="{{ url('/follow') }}">{{ 'フォローする' }}</a> 
-                    @endisset
-                </div>
-            @endif
         </div>
     </div>
 </div>
