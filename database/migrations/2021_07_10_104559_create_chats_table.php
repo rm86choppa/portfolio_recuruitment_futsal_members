@@ -21,6 +21,11 @@ class CreateChatsTable extends Migration
             $table->Integer('send_user_id')->unsigned();
             $table->foreign('send_user_id')->references('id')->on('users')->onDelete('cascade');
             
+            //チャットを開始したユーザIDの外部キー設定
+            //(参照してるユーザIDの登録が削除されたとき、そのIDを参照してるレコードも自動的に削除)
+            $table->Integer('chat_start_user_id')->unsigned();
+            $table->foreign('chat_start_user_id')->references('id')->on('users')->onDelete('cascade');
+
             //投稿IDの外部キー設定
             //(参照してる投稿IDの登録が削除されたとき、そのIDを参照してるレコードも自動的に削除)
             $table->Integer('post_id')->unsigned();

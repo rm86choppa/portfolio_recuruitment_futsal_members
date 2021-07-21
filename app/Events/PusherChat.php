@@ -33,15 +33,14 @@ class PusherChat implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        //チャンネル名に、投稿IDとチャットを申請したユーザIDを付与(投稿ユーザとチャットを申請したユーザで1対1でのやり取りを想定)
-        $channel = 'chat-channel'.$this->chat['post_id'].$this->chat['chat_start_user_id'];
-        //使い終わったデータ削除
-        unset($this->chat['post_id']);
-        unset($this->chat['chat_start_user_id']);
+        /**
+         * チャンネル名取得(以下のチャンネル作成方法)
+         * ①チャンネル名　＋　チャットを開始した投稿ID　＋　チャットを開始したユーザID
+         * ②チャンネル名　＋　投稿をしたユーザID      
+        */
+        $channel = $this->chat['channel'];
 
         return new Channel($channel, $this->chat);
-        //認可を受けないといけない
-        //return new Channel('private-chat-channel', $this->chat);
     }
 
     /**

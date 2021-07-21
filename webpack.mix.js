@@ -25,6 +25,7 @@ mix.js('resources/js/app.js', 'public/js')
    .js('resources/js/email_change.js', 'public/js')
    .js('resources/js/chat.js', 'public/js')
    .js('resources/js/follow.js', 'public/js')
+   .js('resources/js/chat_notification.js', 'public/js')
    .sass('resources/sass/app.scss', 'public/css')
    .version()
    .sourceMaps();
