@@ -17,7 +17,16 @@ class HomeController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth');
+        //.env に APP_ENV=local (ローカル環境) または APP_ENV=testing (テスト環境) と書いてある場合
+        if ( app()->isLocal() || app()->runningUnitTests() ) { 
+            // テスト環境, ローカル環境用の記述
+            //テスト的に認証なしでも機能を使用する
+        }
+        //.env に APP_ENV=production (本番環境) などと書いてあった場合
+        else { 
+            // 本番環境用の記述
+            $this->middleware('auth');
+        }
     }
 
     /**
