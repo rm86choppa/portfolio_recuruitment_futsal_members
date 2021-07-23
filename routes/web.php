@@ -58,7 +58,7 @@ Route::get("reset/{token}", "ChangeEmailController@reset");//メール登録(メ
 
 //チャット機能のルート
 Route::post('/chat', 'ChatController@index')->middleware('verified');
-Route::get('/chat/send', 'ChatController@chatSend')->middleware('verified');
+Route::post('/chat/send', 'ChatController@chatSend')->middleware('verified');
 
 //フォロー機能のルート
 Route::get('/follow', 'FollowController@follow');//フォロー/フォロー解除処理

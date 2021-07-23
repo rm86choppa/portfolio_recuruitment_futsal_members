@@ -40,16 +40,22 @@ class ChatController extends Controller
         //投稿に対してチャットするためチャットボタン押下した投稿情報を取得        
         $post = Post::find($request->post_id);
 
-        $id = $request->chat_start_user_id;
-        //自分と相手のチャット情報取得
-         $query = Chat::query();
-         $chats = $query->where('send_user_id', $post['user_id'])->where('chat_start_user_id', $request->chat_start_user_id)
-                        ->orWhere('send_user_id', intval($request->chat_start_user_id))->orderby('updated_at', 'desc')->get();
-                          
+        $id = $request->my_user_id;
+        //自分と相手のチャット情報取得(チャット履歴を更新履歴の昇順)
+        $chats = Chat::where('post_id', intval($request->post_id))
+                     ->where(function($query) use($post,$request){
+                        $query->where('send_user_id', intval($request->send_user_id))
+                              ->where('my_user_id', intval($request->my_user_id))
+                              ->orwhere('send_user_id', intval($request->my_user_id))
+                              ->where('my_user_id', intval($request->send_user_id));
+                        })
+                      ->orderby('created_at', 'asc')->get();
 
-        $chat_start_user_id = $request->chat_start_user_id;
+        $send_user_id = $request->send_user_id;
+        $chat_channel = $request->chat_channel;
+        $notification_channel = $request->notification_channel;
 
-        return view('chat', compact('post','chat_start_user_id', 'chats'));
+        return view('chat', compact('post','send_user_id', 'chats', 'notification_channel', 'chat_channel'));
     }
 
     public function chatSend(Request $request) {
@@ -75,16 +81,12 @@ class ChatController extends Controller
         
         //チャット通知用イベント
         $post_user_id = Post::where('id', $chat['post_id'])->value('user_id');//投稿した相手にチャット通知するためユーザID取得
-        $chat['channel'] = 'chat-channel'.$post_user_id;
-        $chat['chat_start_user_name'] = User::where('id', $chat['chat_start_user_id'])->value('name');//チャット通知したときに、チャットリンク作成で使用
+        $chat['channel'] = $chat['chat_channel'];
+        $chat['chat_start_user_name'] = User::where('id', $chat['my_user_id'])->value('name');//チャット通知したときに、チャットリンク作成で使用
         event(new PusherChat($chat));
 
         //DB登録成功でpusherへチャット送信イベント発火(チャットのやり取り専用のチャンネル、チャット通知用チャンネルの2チャンネル作成)
-        $chat['channel'] = 'chat-channel'.$chat['post_id'].$chat['chat_start_user_id'];
-        //使い終わったデータ削除
-        unset($this->chat['post_id']);
-        unset($this->chat['chat_start_user_id']);
-        unset($this->chat['chat_start_user_name']);
+        $chat['channel'] = $chat['notification_channel'];
         event(new PusherChat($chat));
 
         return response()->json();

@@ -37,25 +37,29 @@
         <!-- 自分の投稿のみ1投稿に紐づくチャットしたユーザ表示 -->
         @if($post->user_id == Auth::user()->id)
             <div class="row col-md-12 chat_links{{ $post->id }}">
-                @if($post->chats->whereNotIn('send_user_id', Auth::user()->id)->groupBy('send_user_id')->count() >= 1)
-                    <?php $chats = $post->chats->whereNotIn('send_user_id', Auth::user()->id)->groupBy('send_user_id'); ?>
-                    <?php echo('チャットユーザ'); ?><i class="fa fa-2x fa-envelope-square" id="chat_icon{{ $post->id }}"></i>
-                        @foreach($chats as $chat_send_user)
-                            @php
-                                $chat_user_data = $all_users->where('id', $chat_send_user[0]->send_user_id)->first(); 
-                            @endphp
-                            @isset($chat_user_data)
-                                <a href="" onclick="event.preventDefault();
-                                                    document.getElementById('chat_form{{ $chat_user_data->id }}').submit();">{{ $chat_user_data->name }}</a>
-                                <div class="space">&nbsp;</div>
-                                <form id="chat_form{{ $chat_user_data->id }}" action="{{ url('chat') }}" method="post" style="display: none;">
-                                    @csrf
-                                    <input type="hidden" name='chat_start_user_id' id="chat_start_user_id" value="{{ $chat_user_data->id }}">
-                                    <input type="hidden" name='post_id' id="post_id" value="{{ $post->id }}">
-                                    <button id="chat_form_button" type="submit" name="add" style="display:none"></button>
-                                </form>
-                            @endisset
-                        @endforeach
+                <?php echo('チャットユーザ'); ?><i class="fa fa-2x fa-envelope-square" id="chat_icon{{ $post->id }}"></i>
+                <!-- 自分以外で今処理してる投稿にチャットした履歴があるユーザが1件でもあれば、全ユーザ分ループしてチャットリンク表示 -->
+                @if($post->chats->whereNotIn('my_user_id', Auth::user()->id)->groupBy('my_user_id')->count() >= 1)
+                    <?php $chats = $post->chats->whereNotIn('my_user_id', Auth::user()->id)->groupBy('my_user_id'); ?>
+                    @foreach($chats as $chat)
+                        @php
+                            $other_user = $all_users->where('id', $chat[0]->my_user_id)->first();
+                        @endphp
+                        @isset($other_user)
+                            <a href="" onclick="event.preventDefault();
+                                                document.getElementById('chat_form{{ $post->id }}{{ $other_user->id }}').submit();">{{ $other_user->name }}</a>
+                            <div class="space">&nbsp;</div>
+                            <form id="chat_form{{ $post->id }}{{ $other_user->id }}" action="{{ url('chat') }}" method="post" style="display: none;">
+                                @csrf
+                                <input type="hidden" name='send_user_id' id="send_user_id" value="{{ $other_user->id }}">
+                                <input type="hidden" name='my_user_id' id="my_user_id" value="{{ Auth::user()->id }}">
+                                <input type="hidden" name='chat_channel' id="chat_channel" value="chat-channel{{ $other_user->id }}">
+                                <input type="hidden" name='notification_channel' id="notification_channel" value="chat-channel{{ Auth::user()->id }}">
+                                <input type="hidden" name='post_id' id="post_id" value="{{ $post->id }}">
+                                <button id="chat_form_button" type="submit" name="add" style="display:none"></button>
+                            </form>
+                        @endisset
+                    @endforeach
                 @endif
             </div>
         @endif
