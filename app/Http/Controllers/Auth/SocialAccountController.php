@@ -8,6 +8,16 @@ use App\Social;
 
 class SocialAccountController extends Controller
 {
+     /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('guest');
+    }
+    
     //コントローラより、連携するSNSのプロバイダー名を引数で渡す
     public function redirectToProvider(string $provider)
     {

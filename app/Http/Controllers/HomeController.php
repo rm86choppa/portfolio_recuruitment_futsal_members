@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Post;
 use App\User;
 use App\Tag;
+use App\Chat;
 
 class HomeController extends Controller
 {
@@ -16,7 +17,16 @@ class HomeController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth');
+        //.env に APP_ENV=local (ローカル環境) または APP_ENV=testing (テスト環境) と書いてある場合
+        if ( app()->isLocal() || app()->runningUnitTests() ) { 
+            // テスト環境, ローカル環境用の記述
+            //テスト的に認証なしでも機能を使用する
+        }
+        //.env に APP_ENV=production (本番環境) などと書いてあった場合
+        else { 
+            // 本番環境用の記述
+            $this->middleware('auth');
+        }
     }
 
     /**
@@ -27,7 +37,7 @@ class HomeController extends Controller
     public function index()
     {
         //全投稿情報取得(投稿に紐づくユーザ、タグ、いいね情報も取得)
-        $posts = Post::with('user', 'tags', 'likes', 'applications')->orderBy('updated_at', 'desc')->get();
+        $posts = Post::with('user', 'tags', 'likes', 'applications', 'chats')->orderBy('updated_at', 'desc')->get();
 
         //ユーザの投稿一覧を表示する情報取得
         $users = User::with('posts')->orderby('updated_at', 'desc')->get();
@@ -35,7 +45,10 @@ class HomeController extends Controller
         //タグを選択し、選択したタグに紐づく投稿を取得する
         $tags = Tag::with('posts')->orderby('updated_at', 'desc')->get();
 
-        return view('home', compact('posts', 'users', 'tags'));
+        //チャットを開始したユーザIDを取得するため全ユーザ取得
+        $all_users = User::with('follows')->get();
+
+        return view('home', compact('posts', 'users', 'tags', 'all_users'));
     }
 
     /**
@@ -46,7 +59,7 @@ class HomeController extends Controller
     public function sort() {
 
         //全投稿情報取得(投稿に紐づくユーザ、タグ、いいね情報も取得)
-        $posts = Post::with('user', 'tags', 'likes', 'applications')->withcount('applications')->orderBy('applications_count', 'desc')->get();
+        $posts = Post::with('user', 'tags', 'likes', 'applications', 'chats')->withcount('applications')->orderBy('applications_count', 'desc')->get();
 
         //ユーザの投稿一覧を表示する情報取得
         $users = User::with('posts')->orderby('updated_at', 'desc')->get();
@@ -54,6 +67,9 @@ class HomeController extends Controller
         //タグを選択し、選択したタグに紐づく投稿を取得する
         $tags = Tag::with('posts')->orderby('updated_at', 'desc')->get();
 
+        //チャットを開始したユーザIDを取得するため全ユーザ取得
+        $all_users = User::with('follows')->get();
+        
         return view('home', compact('posts', 'users', 'tags'));
     }
 }

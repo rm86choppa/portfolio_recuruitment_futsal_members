@@ -13,6 +13,7 @@
     <script src="{{ asset('js/app.js') }}" defer></script>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://js.pusher.com/5.0/pusher.min.js"></script>
     <script>
         // モーダルウィンドウ
         $(window).on('load',function(){
@@ -24,6 +25,7 @@
             $('[data-toggle="tooltip"]').tooltip()
           })
     </script>
+    
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
@@ -34,6 +36,17 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css">
 </head>
 <body>
+    <!-- チャット通知で必要な情報 -->
+    @guest
+        <!-- 認証されてないとき処理なし -->
+    @else
+        <!-- ログイン時のみ、チャット通知でチャンネル作成のために今ログインしてる自分のユーザIDを定義 -->
+        <input type="hidden" name='chat_my_user_id' id="chat_my_user_id" value="{{ Auth::user()->id }}">
+        <!-- jsで動的にチャットリンクを作成するときに必要なチャットページのURL情報(phpのメソッドのためjs側で実行できない) -->
+        <input type="hidden" name='chat_url' id="chat_url" value="{{ url('chat') }}">
+        <!-- jsで動的にチャットリンクを作成するときに必要なトークン(@csrfはブレードテンプレートのためjs側で実行できない) -->
+        <input type="hidden" name='chat_token' id="chat_token" value="{{ csrf_token() }}">
+    @endguest
     <div id="app">
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
             <div class="container">

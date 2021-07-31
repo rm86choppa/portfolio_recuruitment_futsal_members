@@ -55,3 +55,11 @@ Route::get('/home/sort', 'HomeController@sort')->middleware('verified');
 //メールアドレス変更機能のルート
 Route::get('/email', 'ChangeEmailController@sendChangeEmailLink')->middleware('verified');//メール送信
 Route::get("reset/{token}", "ChangeEmailController@reset");//メール登録(メール内リンククリック後)
+
+//チャット機能のルート
+Route::post('/chat', 'ChatController@index')->middleware('verified');
+Route::post('/chat/send', 'ChatController@chatSend')->middleware('verified');
+
+//フォロー機能のルート
+Route::get('/follow', 'FollowController@follow');//フォロー/フォロー解除処理
+Route::post('/follow/post', 'FollowController@index');//フォロー者の投稿一覧ページ

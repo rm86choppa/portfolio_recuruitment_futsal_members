@@ -7,9 +7,30 @@ use App\Post;
 use App\User;
 use App\Tag;
 use Illuminate\Support\Facades\Hash;
+use App\Chat;
+use Illuminate\Support\Facades\DB;
 
 class MypageController extends Controller
 {
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        //.env に APP_ENV=local (ローカル環境) または APP_ENV=testing (テスト環境) と書いてある場合
+        if ( app()->isLocal() || app()->runningUnitTests() ) { 
+            // テスト環境, ローカル環境用の記述
+            //テスト的に認証なしでも機能を使用する
+        }
+        //.env に APP_ENV=production (本番環境) などと書いてあった場合
+        else { 
+            // 本番環境用の記述
+            $this->middleware('auth');
+        }
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -18,12 +39,15 @@ class MypageController extends Controller
     public function index()
     {
         //全投稿情報取得(投稿に紐づくユーザ、タグ、いいね情報も取得)
-        $posts = Post::with('user', 'tags', 'likes', 'applications')->orderBy('updated_at', 'desc')->get();
+        $posts = Post::with('user', 'tags', 'likes', 'applications', 'chats')->orderBy('updated_at', 'desc')->get();
+
+        //チャットを開始したユーザIDを取得するため全ユーザ取得
+        $all_users = User::with('follows')->get();
 
         //ログインユーザがいいねした投稿の一覧を表示するため、ユーザに紐づく投稿(いいねした投稿)を取得
         $users = User::with('likes')->orderby('updated_at', 'desc')->get();
 
-        return view('mypage', compact('posts'), compact('users'));
+        return view('mypage', compact('posts', 'users', 'all_users'));
     }
 
     /**

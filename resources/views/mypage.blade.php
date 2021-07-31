@@ -5,9 +5,10 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
 
-            <!-- マイページのオプション機能(ユーザ名変更、パス変更、アドレス変更、切替(自身の投稿、いいねした投稿)) -->
+            <!-- マイページのオプション機能(ユーザ名変更、パス変更、アドレス変更、切替(自身の投稿、いいねした投稿))、フォロー一覧 -->
             @component('components.mypageOption', ['name' => Auth::user()->name,
-                                                   'email'  => Auth::user()->email ])
+                                                   'email'  => Auth::user()->email,
+                                                   'all_users' => $all_users ])
             @endcomponent
 
 
@@ -21,7 +22,8 @@
                         @foreach($user->likes as $post)
                             <!-- 編集完了したらマイページに戻るよう引数で指定にする -->
                             @component('components.postsDisplay', ['post' => $post,
-                                                                   'URL'  => 'mypage/'.$post->id.'/edit' ])
+                                                                   'URL'  => 'mypage/'.$post->id.'/edit', 
+                                                                   'all_users' => $all_users])
                             @endcomponent
                         @endforeach
                     @endif
@@ -35,7 +37,8 @@
                     <!-- ログイン中のユーザの投稿のみ表示 -->
                     @if(Auth::user()->id == $post->user_id)
                     @component('components.postsDisplay', ['post' => $post,
-                                                           'URL'  => 'mypage/'.$post->id.'/edit' ])
+                                                           'URL'  => 'mypage/'.$post->id.'/edit', 
+                                                           'all_users' => $all_users ])
                     @endcomponent
                     @endif
                 @endforeach
