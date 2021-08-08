@@ -23,7 +23,7 @@ class LoginController extends Controller
 
     //5回ログインに失敗すると5分間ログイン不可にする(同一IP、同一ユーザをロック)
     //ロック情報はキャッシュを使用してる
-    protected $maxAttempts = 2;     // ログイン試行回数（回）
+    protected $maxAttempts = 4;     // ログイン試行回数（回）
     protected $decayMinutes = 5;   // ログインロックタイム（分）
 
     /**
