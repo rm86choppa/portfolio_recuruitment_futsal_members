@@ -70,6 +70,6 @@ class HomeController extends Controller
         //チャットを開始したユーザIDを取得するため全ユーザ取得
         $all_users = User::with('follows')->get();
         
-        return view('home', compact('posts', 'users', 'tags'));
+        return view('home', compact('posts', 'users', 'tags', 'all_users'));
     }
 }
