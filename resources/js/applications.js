@@ -8,10 +8,10 @@ $(function () {
             const applicationButtonText = $(this).text();
 
             let doApplication = false;
-            if(applicationButtonText === '応募') {   
-                doApplication = window.confirm('応募してよろしいですか');
-            } else {
+            if(applicationButtonText.includes('応募取消') === true) { 
                 doApplication = window.confirm('応募取消してよろしいですか');
+            } else {  
+                doApplication = window.confirm('応募してよろしいですか');
             }
 
             if(doApplication == true) {
