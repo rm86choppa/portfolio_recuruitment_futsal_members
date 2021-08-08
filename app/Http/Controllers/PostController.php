@@ -102,7 +102,7 @@ class PostController extends Controller
         }
 
         \Session::flash('flash_message', '登録が完了しました');
-        return view('newPost');
+        return redirect('newPost');
     }
 
     /**
