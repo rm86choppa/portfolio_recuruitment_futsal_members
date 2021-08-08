@@ -10,7 +10,10 @@
                 <button type="button" id="tag_button" class="btn btn-primary dropdown-toggle home_option_button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">タグ</button>
                 <div class="dropdown-menu" id="tag_menu">
                     @foreach($tags as $tag)
-                        <a class="dropdown-item dropdown-item_tag" href="#" data-value="{{ $tag->tag }}">{{ $tag->tag }}</a>
+                        <!-- 今処理してるタグがどの投稿にも紐づいてなければ表示しない -->
+                        @if(count($tag->posts) >= 1)
+                            <a class="dropdown-item dropdown-item_tag" href="#" data-value="{{ $tag->tag }}">{{ $tag->tag }}</a>
+                        @endif
                     @endforeach
                 </div>
             </div>
