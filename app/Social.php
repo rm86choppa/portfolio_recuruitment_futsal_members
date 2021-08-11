@@ -60,28 +60,35 @@ class Social extends Model
                     'name'  => $providerUser->getName(),
                 ]);
             }
+
+            // 取得(or作成)したusersテーブルに紐づくlinked_social_accountsのレコードを1行追加
+            $user->accounts()->create([
+                'provider_id'   => $providerUser->getId(),
+                'provider_name' => $provider,
+            ]);
+
+            // 取得したusersテーブルの情報を返す
+            return $user;
+        } else {
+            // usersには情報ありなので、ソーシャルテーブルのみ作成
+            $email_search_user->accounts()->create([
+                'provider_id'   => $providerUser->getId(),
+                'provider_name' => $provider,
+            ]);
+
+            // 取得したusersテーブルの情報を返す
+            return $email_search_user;
         }
-
-        // 取得(or作成)したusersテーブルに紐づくlinked_social_accountsのレコードを1行追加
-        $user->accounts()->create([
-            'provider_id'   => $providerUser->getId(),
-            'provider_name' => $provider,
-        ]);
-
-        // 取得したusersテーブルの情報を返す
-        return $user;
-
     }
 
     //プロバイダーIDで検索した結果を返す。
     public function find($providerInfo)
     {
         $provider = $providerInfo['provider'];
-        $providerUser = $providerInfo['user'];
+        $providerUser_id = $providerInfo['user']->getId();
 
         $account = Social::where('provider_name', $provider)
-        ->where('provider_id', $providerUser->getId())
-        ->first();
+        ->where('provider_id', $providerUser_id)->first();
 
         return $account;
     }

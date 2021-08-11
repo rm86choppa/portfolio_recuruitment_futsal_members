@@ -20,7 +20,7 @@ class CreateSocialsTable extends Migration
             //(参照してるユーザIDの登録が削除されたとき、そのIDを参照してるレコードも自動的に削除)
             $table->Integer('user_id')->unsigned();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->string('provider_id', 100);
+            $table->string('provider_id', 100)->unique();
             $table->string('provider_name', 20);
             $table->dateTime('created_at')->nullable();
             $table->dateTime('updated_at')->nullable();
