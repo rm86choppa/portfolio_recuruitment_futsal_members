@@ -19,9 +19,7 @@ Route::get('/', function () {
     return view('auth.login');
 });
 
-Route::get('/newPost', function () {
-    return view('newPost');
-});
+Route::get('/newPost', 'PostController@index');
 
 //仮登録(メール確認機能)を使用するため、"verify=true"に設定
 Auth::routes(['verify' => true]);
